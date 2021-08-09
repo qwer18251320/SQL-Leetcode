@@ -9,3 +9,32 @@ On p1.x != p2.x OR p1.y != p2.y;
 
 ## Power(x,y) or Pow(x,y) = x^y
 ## sqrt((x1-x2)^2+(y1-y2)^2)
+
+
+
+# 1098. Unpopular Books
+Select Books.book_id, name
+From books
+Where available_from  < "2019-05-23"
+And book_id NOT IN (Select book_id
+                    From Orders
+                    Where dispatch_date Between "2018-06-23" 
+                    And "2019-06-23"
+                    Group By book_id
+                    Having Sum(quantity) >= 10);
+
+## some books available_from early than '2019-05-23', but no sales during '2018-06-23' and '2019-06-23' - group by cannot reflect those book sales
+
+
+
+# 1112. Highest Grade For Each Student
+Select student_id, Min(course_id) AS course_id, grade
+From Enrollments
+Where (student_id, grade) In (Select student_id, Max(grade) As grade
+                              From Enrollments
+                              Group By student_id)
+Group By student_id, grade
+Order By student_id ASC;
+
+## Where (x,y) In (x,y)
+Group By x, y
