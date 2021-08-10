@@ -38,3 +38,54 @@ Order By student_id ASC;
 
 ## Where (x,y) In (x,y)
 Group By x, y
+
+
+# 550. Game Play Analysis IV
+Select Round(Count(Distinct a2.player_id) / (Select Count(Distinct player_id) From Activity),2) As fraction
+From Activity a1 Left Join
+(Select player_id, Min(event_date) As first_log
+From Activity
+Group By player_id) As a2
+On a1.player_id = a2.player_id And DateDiff(event_date, first_log) = 1;
+
+## find first logged in, Date diff
+
+
+
+
+# 585. Investments in 2016
+Select Round(Sum(TIV_2016),2) As TIV_2016
+From insurance
+Where TIV_2015 IN (Select TIV_2015
+                  From insurance
+                  Group By TIV_2015
+                  Having Count(*)>1)
+And (LAT,LON) IN (Select LAT, LON
+                  From insurance 
+                  Group By LAT, LON
+                  Having Count(*) =1);
+## two creteria, familar to use Where(x,y) IN (subquery)
+
+
+
+# 1070. Product Sales Analysis III
+Select Sales.product_id, year As first_year, quantity, price
+From Sales
+Where (product_id, year) IN (Select product_id, Min(year) As year
+                            From Sales
+                            Group By product_id);
+                            
+## familar to use Where(x,y) IN (subquery)
+
+
+
+
+# 1132. Reported Posts II
+Select Round(Avg(percent),2) As average_daily_percent
+From
+(Select Count(Distinct r1.post_id)/Count(Distinct a1.post_id)*100 As percent
+From Actions a1 Left Join Removals r1 Using(post_id)
+Where extra = "spam" And action ="report"
+Group By action_date) As total;
+
+## for 2019-07-04 only one psot_id 2 remove, total two distinct id 2 and 4
