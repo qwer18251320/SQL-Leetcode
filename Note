@@ -89,3 +89,33 @@ Where extra = "spam" And action ="report"
 Group By action_date) As total;
 
 ## for 2019-07-04 only one psot_id 2 remove, total two distinct id 2 and 4
+
+
+
+# 1174. Immediate Food Delivery II
+Select Round(Count(customer_id)/(Select Count(Distinct customer_id) From Delivery)*100,2)
+As immediate_percentage
+From Delivery
+Where (customer_id,order_date) IN
+(Select customer_id, Min(order_date) As order_date
+From Delivery
+Group By customer_id)
+And order_date = customer_pref_delivery_date;
+
+## Where (x,y) In (subquery)
+
+
+
+
+# 1212. Team Scores in Football Tournament
+Select team_id, team_name, 
+Sum(Case When team_id=host_team And host_goals>guest_goals Then 3 Else 0 End)+
+Sum(Case When team_id=guest_team And guest_goals>host_goals Then 3 Else 0 End)+
+Sum(Case When team_id=host_team And host_goals=guest_goals Then 1 Else 0 End)+
+Sum(Case When team_id=guest_team And guest_goals=host_goals Then 1 Else 0 End) As num_points
+From Teams Left Join Matches
+On team_id = host_team Or team_id = guest_team
+Group By team_id
+Order By num_points DESC, team_id ASC;
+
+## sum(case when ...)+sum(case when...) As
