@@ -119,3 +119,50 @@ Group By team_id
 Order By num_points DESC, team_id ASC;
 
 ## sum(case when ...)+sum(case when...) As
+
+
+
+
+
+# 1158. Market Analysis I
+Select user_id As buyer_id, join_date, IFNULL(num,0) As orders_in_2019
+From
+(Select user_id, join_date
+From Users) As u1
+Left Join 
+(Select buyer_id, Count(*) As num
+From Orders
+Where Left(order_date,4) = 2019
+Group By buyer_id) As o1
+On user_id = buyer_id;
+
+## two subquery, ifnull
+
+
+
+# 1264. Page Recommendations
+# method 1
+Select Distinct(page_id) As recommended_page
+From 
+(Select Case When user1_id = 1 Then user2_id
+When user2_id = 1 Then user1_id End As user_id From Friendship) As f1
+Join Likes Using(user_id)
+Where page_id Not In
+(Select page_id
+From Likes
+Where user_id = 1);
+# method 2
+Select Distinct(page_id) As recommended_page
+From Likes
+Where user_id IN
+(Select user2_id As user_id
+From Friendship 
+Where user1_id = 1
+Union All
+Select user1_id As user_id
+From Friendship
+Where user2_id = 1)
+And page_id NOT IN 
+(Select page_id
+From Likes
+Where user_id = 1);
