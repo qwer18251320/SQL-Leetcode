@@ -185,3 +185,19 @@ Group By month, country
 HAVING approved_count>0 OR chargeback_count>0;
 ## sum(column="xxx")
 ## HAVING approved_count>0 OR chargeback_count>0, keep out zero count rows
+
+
+#1440. Evaluate Boolean Expression
+# Write your MySQL query statement below
+Select e1.left_operand, e1.operator, e1.right_operand,
+(Case When v1.value < v2.value And e1.operator = "<" Then "true"
+When v1.value > v2.value And e1.operator = ">" Then "true"
+When v1.value = v2.value And e1.operator = "=" Then "true"
+Else "false" End) As value
+From Expressions e1 Join Variables v1
+On e1.left_operand = v1.name
+Join Variables v2
+On e1.right_operand = v2.name;
+
+
+## join two times
