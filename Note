@@ -201,3 +201,40 @@ On e1.right_operand = v2.name;
 
 
 ## join two times
+
+
+#1532. The Most Recent Three Orders
+Select name As customer_name, c1.customer_id, o1.order_id, o1.order_date
+From customers c1 
+Join Orders o1 On c1.customer_id = o1.customer_id
+Join Orders o2 On o1.customer_id = o2.customer_id 
+And o1.order_date <= o2.order_date
+Group By customer_name, o1.customer_id, o1.order_id, o1.order_date
+Having Count(*)<=3
+Order By 1 ASC, 2 ASC, o1.order_date DESC;
+
+## join three table
+## group by 很多個, 才會顯示全部, 如果只group by id 那只會每個id各顯示一個output
+
+
+# 1501. Countries You Can Safely Invest In
+Select country
+From
+(Select c1.name As country, Avg(t1.duration) As avg_dur
+From Person p1 
+Join Country c1 On Left(phone_number,3) = country_code
+Join 
+(Select caller_id as id, duration 
+From Calls
+Union All
+Select callee_id as id, duration
+From Calls) As t1 On p1.id = t1.id
+Group By country) As g1,
+(Select Avg(duration) As global_dur
+From Calls) As g2
+Where avg_dur > global_dur;
+
+## need to be simplified
+
+
+
