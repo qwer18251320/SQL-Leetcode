@@ -166,3 +166,22 @@ And page_id NOT IN
 (Select page_id
 From Likes
 Where user_id = 1);
+
+
+#1205. Monthly Transactions II
+# Write your MySQL query statement below
+Select Left(trans_date,7) As month, country, 
+Sum(state="approved") As approved_count,
+Sum(Case When state="approved" Then amount Else 0 End) As approved_amount,
+Sum(state="chargebacks") As chargeback_count,
+Sum(Case When state="chargebacks" Then amount Else 0 End) As chargeback_amount
+From
+(Select Distinct(trans_id) As id, country, "chargebacks" As State, amount, c1.trans_date
+From Transactions t1 Right Join Chargebacks c1
+On id = trans_id
+Union All
+Select* From Transactions) As t2
+Group By month, country
+HAVING approved_count>0 OR chargeback_count>0;
+## sum(column="xxx")
+## HAVING approved_count>0 OR chargeback_count>0, keep out zero count rows
