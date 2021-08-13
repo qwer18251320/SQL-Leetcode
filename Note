@@ -238,3 +238,13 @@ Where avg_dur > global_dur;
 
 
 
+#1783. Grand Slam Titles
+Select player_id, player_name, 
+Sum(Wimbledon = player_id)+Sum(Fr_open = player_id)+Sum(US_open = player_id)+Sum(Au_open = player_id) As grand_slams_count 
+From Players Join Championships 
+On Wimbledon = player_id Or Fr_open = player_id Or US_open = player_id
+Or Au_open = player_id
+Group By player_id;
+
+## Sum(xxx)+Sum(xxx)
+## Join xxx On xxx=yy or xxx=zzz 
