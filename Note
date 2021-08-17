@@ -259,4 +259,9 @@ From Products p1 Right Join Orders o1 Using(Product_id)
 Group By o1.product_id)
 Order By product_name ASC, product_id ASC, Order_id ASC;
 
-#
+#1715. Count Apples and Oranges
+Select Sum(a1+a2) As apple_count, Sum(o1+o2) As orange_count
+From
+(Select IfNull(b1.chest_id, null), b1.apple_count As a1, b1.orange_count As o1, IfNull(c1.apple_count,0) As a2, IfNull(c1.orange_count,0) As o2
+From Boxes b1 Left Join Chests c1 Using(chest_id)) As t1;
+
