@@ -316,3 +316,25 @@ Limit 1;
 
 ## sum(weight) Over (Order By Turn ASC)-follow the Turn to sum the weight
 ## then find the name clostest to 1000
+### 要按照"順序" row_number() 加減, 就用window function
+
+
+
+
+
+
+# 1285. Find the Start and End Number of Continuous Ranges
+Select Min(log_id) As start_id, Max(log_id) As end_id
+From (Select log_id, ROW_NUMBER() Over(Order By log_id) As num
+      From Logs) As l1
+Group By (log_id-num);
+
+## Use to rank the order
+## Select log_id, ROW_NUMBER() Over(Order By log_id) As num From Logs
+## 1, 1, 0
+## 2, 2, 0
+## 3, 3, 0
+## 7, 4, 3
+## 8, 5, 3
+## 10, 6, 4
+### Group By(log_id-num) = 0,3,4
