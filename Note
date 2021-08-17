@@ -248,3 +248,15 @@ Group By player_id;
 
 ## Sum(xxx)+Sum(xxx)
 ## Join xxx On xxx=yy or xxx=zzz 
+
+
+# 1549. The Most Recent Orders for Each Product
+Select product_name, o1.product_id, order_id, order_date
+From Products p1 Right Join Orders o1 Using(Product_id)
+Where (product_name,order_date) IN 
+(Select product_name, Max(order_date) As order_date
+From Products p1 Right Join Orders o1 Using(Product_id)
+Group By o1.product_id)
+Order By product_name ASC, product_id ASC, Order_id ASC;
+
+#
