@@ -414,3 +414,99 @@ On t2.id>t1.id And t2.x_value != t1.x_value And t2.y_value != t1.y_value
 Order By area DESC, p1 ASC, p2 ASC;
 
 ## join part cannot use t2.id-t2.id=1, use t2.id>t1.id
+
+
+
+
+
+
+### practice window function - cte ###
+
+#1951. All the Pairs With the Maximum Number of Common Followers
+With cte As
+(Select r1.user_id As user1_id, r2.user_id As user2_id, r1.follower_id
+From Relations r1 Join Relations r2
+On r1.user_id < r2.user_id And r1.follower_id = r2.follower_id)
+
+Select user1_id, user2_id
+From
+(Select user1_id, user2_id, dense_rank() Over(Order by Count(follower_id) DESC) As rk
+From cte
+Group By user1_id, user2_id) As t1
+Where rk = 1; 
+
+#1875. Group Employees of the Same Salary
+Select*, Dense_Rank() Over(Order By salary) As team_id
+From Employees
+Where salary In
+(Select salary
+From Employees
+Group By salary
+Having count(*)>=2);
+
+# 1867. Orders With Maximum Quantity Above Average
+With cte As
+(Select order_id, Avg(quantity) As ave_quan, Max(quantity) As max_quan
+From OrdersDetails o1
+Group By order_id
+)
+
+Select order_id
+From cte
+Where max_quan > (Select Max(ave_quan) From cte);
+
+# window function - cte
+
+
+#1811. Find Interview Candidates
+Select mail, name
+From Users
+Where user_id In (
+Select Distinct(user_id)
+From
+(Select user_id, contest_id, Row_number() Over(Partition By user_id Order By contest_id) As rnk
+From
+(Select contest_id, gold_medal As user_id
+From Contests
+Union
+Select contest_id, silver_medal As user_id
+From Contests
+Union
+Select contest_id, bronze_medal As user_id
+From Contests) As t1) As t2
+Group By user_id, (contest_id-rnk)
+Having Count(*)>=3) # condition 1 
+Or user_id In(
+Select gold_medal As user_id
+From Contests
+Group By gold_medal
+Having Count(*) >= 3) # condition 2;
+
+#1747. Leetflex Banned Accounts
+Select Distinct(l1.account_id)
+From LogInfo l1 Join LogInfo l2 
+On l1.account_id = l2.account_id 
+And l1.ip_address != l2.ip_address
+Where l1.login Between l2.login And l2.logout;
+
+Select Distinct(l1.account_id)
+From LogInfo l1, LogInfo l2 
+Where l1.login Between l2.login And l2.logout
+And l1.account_id = l2.account_id 
+And l1.ip_address != l2.ip_address;
+
+
+#1699. Number of Calls Between Two Persons
+Select person1, person2, 
+Sum(call_count) As call_count, Sum(total_duration) As total_duration
+From
+(Select from_id As person1, to_id As person2, Count(*) As call_count, Sum(duration) As total_duration
+From Calls
+Where from_id < to_id
+Group By from_id, to_id
+Union
+Select to_id As person1, from_id As person2, Count(*) As call_count, Sum(duration) As total_duration
+From Calls
+Where from_id > to_id
+Group By from_id, to_id) As t1
+Group By person1, person2;
