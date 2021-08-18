@@ -338,3 +338,20 @@ Group By (log_id-num);
 ## 8, 5, 3
 ## 10, 6, 4
 ### Group By(log_id-num) = 0,3,4
+
+
+
+#1308. Running Total for Different Genders
+Select s1.gender, s1.day, Sum(s1.score_points) Over(Partition By Gender Order By day) As total
+From Scores s1 Join Scores s2 
+On s1.day >= s2.day And s1.gender=s2.gender
+Group By s1.gender, s1.day
+Order By gender ASC, day ASC;
+
+
+## use window function to sum the score_points
+## Sum(s1.score_points) Over(Partition By Gender Order By day) As total
+## partition by - like group by gender
+## order by - sum points by the order of day 
+
+
