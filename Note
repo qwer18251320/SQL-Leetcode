@@ -355,3 +355,62 @@ Order By gender ASC, day ASC;
 ## order by - sum points by the order of day 
 
 
+
+
+#1270. All People Report to the Given Manager
+## 1st method - complex
+Select employee_id
+From Employees
+Where manager_id IN
+(Select employee_id
+From Employees
+Where manager_id IN
+(Select employee_id
+From Employees
+Where manager_id IN (Select manager_id
+                     From
+                     (Select manager_id, Count(*) As total
+                      From Employees
+                      Group By manager_id) As e1
+                     Having Max(total))
+And employee_id != manager_id))
+UNION
+Select employee_id
+From Employees
+Where manager_id IN
+(Select employee_id
+From Employees
+Where manager_id IN (Select manager_id
+                     From
+                     (Select manager_id, Count(*) As total
+                      From Employees
+                      Group By manager_id) As e1
+                     Having Max(total))
+And employee_id != manager_id)
+UNION
+Select employee_id
+From Employees
+Where manager_id IN (Select manager_id
+                     From
+                     (Select manager_id, Count(*) As total
+                      From Employees
+                      Group By manager_id) As e1
+                     Having Max(total))
+And employee_id != manager_id;
+
+## 2nd method -clear
+Select e1.employee_id
+From Employees e1, Employees e2, Employees e3
+Where e1.manager_id = e2.employee_id #find ee who manager is 4
+And e2.manager_id = e3.employee_id #find ee who manager is 2,7
+And e3.manager_id = 1 # find ee who manager is 1
+And e1.employee_id != 1 #because 1 is boss;
+
+#1459. Rectangles Area
+Select t1.id As p1, t2.id As p2, 
+ABS(t2.x_value-t1.x_value)*ABS(t2.y_value-t1.y_value) As area
+From Points t1 Join Points t2
+On t2.id>t1.id And t2.x_value != t1.x_value And t2.y_value != t1.y_value
+Order By area DESC, p1 ASC, p2 ASC;
+
+## join part cannot use t2.id-t2.id=1, use t2.id>t1.id
