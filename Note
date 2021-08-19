@@ -510,3 +510,25 @@ From Calls
 Where from_id > to_id
 Group By from_id, to_id) As t1
 Group By person1, person2;
+
+
+#1596. The Most Frequently Ordered Products for Each Customer
+Select customer_id, product_id, product_name
+From 
+(Select customer_id, o1.product_id, product_name,
+ Rank() Over(Partition By customer_id Order By Count(o1.product_id) DESC) As rnk
+ From Orders o1 Join Products p1 Using (product_id)
+ Group By customer_id, product_id) As t1
+Where rnk=1;
+
+#找max or min 時, 如果同時有很多東西的max一樣 就用rank 找rnk 1
+
+
+
+#1454. Active Users
+Select Distinct(l1.id), (Select name From Accounts Where id=l1.id) As name 
+From Logins l1, Logins l2
+Where l1.id = l2.id
+And DateDiff(l1.login_date, l2.login_date) Between 1 And 4
+Group By l1.id, l1.login_date
+Having Count(Distinct l2.login_date) = 4;
