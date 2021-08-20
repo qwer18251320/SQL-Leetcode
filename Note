@@ -532,3 +532,35 @@ Where l1.id = l2.id
 And DateDiff(l1.login_date, l2.login_date) Between 1 And 4
 Group By l1.id, l1.login_date
 Having Count(Distinct l2.login_date) = 4;
+
+
+#1321. Restaurant Growth
+With cte As
+(Select visited_on, Sum(amount) As total_amount
+From Customer 
+Group By visited_on) #每一天的total
+
+Select c1.visited_on, Sum(c2.total_amount) As amount, 
+Round(Avg(c2.total_amount),2) As average_amount
+From cte c1, cte c2
+Where DateDiff(c1.visited_on, c2.visited_on) Between 0 And 6
+Group By c1.visited_on
+Having Count(c1.visited_on)=7; # 沒有這一條coding的話 會把每天(0101~0110)都列出來, 但只有0107~0110的count有七個
+
+# because visited_on is duplicate for 10th Jan, "group by" is necessary to remove duplicates. SUM(SUM) enables doing this in one step vs below subquery approach.
+
+
+
+#1613. Find the Missing IDs
+With Recursive cte As
+(Select 1 as ids
+Union 
+Select ids+1
+From cte
+Where ids < (Select Max(customer_id) From Customers))
+
+Select ids
+From cte
+Where ids Not In (Select customer_id From Customers);
+
+# RECURSIVE - CTE 重複執行，返回數據的子集，直到它返回完整的結果集
