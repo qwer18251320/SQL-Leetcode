@@ -9,14 +9,14 @@ From Person p1 Left Join Address a1 Using(PersonId);
 ##### Method 1.
 With cte As
 (Select*, Dense_Rank() Over (Order By Salary DESC) As rnk
- From Employee)
+From Employee)
  
- Select Max(Salary) As SecondHighestSalary
- From cte
- Where rnk=2
+Select Max(Salary) As SecondHighestSalary
+From cte
+Where rnk=2
  
- ##### Method 2.
- Select Max(Salary) As SecondHighestSalary
+##### Method 2.
+Select Max(Salary) As SecondHighestSalary
 From Employee
 Where Salary not in (Select Max(Salary) From Employee);
  
@@ -27,7 +27,52 @@ Where Salary < (Select Max(Salary) From Employee);
 
 
 #### 181. Employees Earning More Than Their Managers
+##### Method 1.
+Select e1.Name As Employee
+From Employee e1, Employee e2
+Where e1.ManagerId = e2.Id 
+And e1.Salary > e2.Salary;
+
+##### Method 2. Inner Join
+Select e1.Name As Employee 
+From Employee e1 Inner Join Employee e2
+On e1.ManagerId = e2.Id 
+Where e1.Salary > e2.Salary;
+
 
 #### 182. Duplicate Emails
+##### Method 1. Window Function
+With cte As
+(Select Email, Count(*) As num
+From Person
+Group By Email)
+
+Select Email
+From cte
+Where num >1;
+
+##### Method 2. 
+Select Email
+From (Select Email, Count(*) As num
+From Person
+Group By Email) As p1
+Where num >1;
+
+##### Method 3.
+Select Email
+From Person
+Group By Email
+Having Count(*)>1;
+
 
 #### 183. Customers Who Never Order
+##### Method 1. NOT IN
+Select Name As Customers
+From Customers
+Where Id NOT IN (Select CustomerID From Orders);
+
+##### Method 2. IS NULL
+Select Name As Customers
+From Customers c1 Left Join Orders o1
+On c1.Id = o1.CustomerId
+Where CustomerId IS NULL;
