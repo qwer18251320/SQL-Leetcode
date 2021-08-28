@@ -76,3 +76,35 @@ Select Name As Customers
 From Customers c1 Left Join Orders o1
 On c1.Id = o1.CustomerId
 Where CustomerId IS NULL;
+
+
+
+#### 196. Delete Duplicate Emails
+##### Method 1.
+##### Method 2.
+
+#### 197. Rising Temperature
+##### Method 1. DateDiff(a,b)
+Select w2.id
+From Weather w1, Weather w2
+Where DateDiff(w2.recordDate,w1.recordDate)=1 #w2-w1=1, 以w2為主
+And w2.Temperature > w1.Temperature;
+
+##### Method 2. Join & On 
+Select w2.id
+From Weather w1 Join Weather w2 
+On DateDiff(w2.recordDate,w1.recordDate)=1 #w2-w1=1
+And w2.Temperature > w1.Temperature;
+
+
+#### 511. Game Play Analysis I
+##### Method 1.
+##### Method 2.
+
+#### 512. Game Play Analysis II
+##### Method 1.
+##### Method 2.
+
+#### 577. Employee Bonus
+##### Method 1.
+##### Method 2.
