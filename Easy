@@ -93,18 +93,52 @@ And w2.Temperature > w1.Temperature;
 ##### Method 2. Join & On 
 Select w2.id
 From Weather w1 Join Weather w2 
-On DateDiff(w2.recordDate,w1.recordDate)=1 #w2-w1=1
+On DateDiff(w2.recordDate,w1.recordDate)=1
 And w2.Temperature > w1.Temperature;
 
 
 #### 511. Game Play Analysis I
-##### Method 1.
+##### Method 1. window function
+With cte As
+(Select*, Rank() Over (Partition By player_id Order By event_date ASC) As rnk
+From Activity)
+
+Select player_id, event_date As first_login
+From cte
+Where rnk=1;
+
 ##### Method 2.
+Select player_id, Min(event_date) As first_login
+From Activity
+Group By player_id;
+
+
 
 #### 512. Game Play Analysis II
-##### Method 1.
-##### Method 2.
+##### Method 1. window function
+With cte As
+(Select*, Rank() Over (Partition By player_id Order By event_date ASC) As rnk
+From Activity)
+
+Select player_id, device_id
+From cte
+Where rnk=1;
+
+##### Method 2. subquery, where xxx In <faster than 84.72%>
+Select player_id, device_id
+From Activity 
+Where (player_id,event_date) In (Select player_id, Min(event_date) As event_date
+                                 From Activity
+                                 Group By player_id);
 
 #### 577. Employee Bonus
-##### Method 1.
-##### Method 2.
+##### Method 1. IfNull(), IS NULL
+Select name, IfNull(bonus,null) As bonus
+From Employee e1 Left Join Bonus b1 Using (empId)
+Where bonus < 1000 Or bonus IS NULL;
+
+##### Method 2. IfNull() in where
+Select name, bonus
+From Employee e1 Left Join Bonus b1 Using (empId)
+Where IFNULL(bonus,0)<1000;
+
