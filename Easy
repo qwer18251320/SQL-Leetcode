@@ -153,3 +153,62 @@ Select name, bonus
 From Employee e1 Left Join Bonus b1 Using (empId)
 Where IFNULL(bonus,0)<1000;
 
+
+
+
+
+#### 584. Find Customer Referee
+##### Method 1. Where IFnull() <508 ms>
+Select name
+From customer
+Where IfNull(referee_id,0) != 2;
+##### Method 2. OR, IS NULL
+Select name
+From customer
+Where referee_id != 2 Or referee_id IS NULL;
+
+##### Method 3. Not In with subquery
+Select name
+From customer
+Where id Not In (Select id From customer Where referee_id=2)
+
+
+#### 586. Customer Placing the Largest Number of Orders
+##### Method 1. Order By count(*) <369 ms>
+Select customer_number
+From Orders
+Group By customer_number
+Order By Count(order_number) Desc
+Limit 1;
+
+
+##### Method 2. Subquery - can change to cte but using more runtime than subquery, dense_rank
+Select customer_number
+From
+(Select customer_number, 
+Dense_Rank() Over (Order By Count(order_number) Desc) As rnk
+From Orders
+Group By customer_number) As o1
+Where rnk=1;
+
+
+
+
+#### 595. Big Countries
+##### Method 1.
+
+
+
+##### Method 2.
+
+
+
+#### 596. Classes More Than 5 Students
+##### Method 1.
+##### Method 2.
+
+
+
+#### 597. Friend Requests I: Overall Acceptance Rate
+##### Method 1.
+##### Method 2.
