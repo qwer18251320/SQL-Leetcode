@@ -251,3 +251,62 @@ Select Round(
     (Select Count(*)
      From (Select Distinct sender_id, send_to_id
            From FriendRequest) As send),0), 2) As accept_rate;
+
+
+
+
+#### 603. Consecutive Available Seats
+##### Method 1. Self Join
+Select Distinct(c2.seat_id)
+From cinema c1 Join cinema c2
+On Abs(c2.seat_id-c1.seat_id)=1 
+And c1.free=1 And c2.free=1
+Order By seat_id ASC;
+
+##### Method 2. Where 替代 self join, and (a=b+1 or b=a+1)
+Select Distinct(c1.seat_id)
+From cinema c1, cinema c2
+Where c1.free=1 
+And c2.free=1 
+And (c1.seat_id = c2.seat_id+1 OR c1.seat_id+1 = c2.seat_id)
+Order By seat_id ASC;
+
+
+
+#### 607. Sales Person
+##### Method 1. Multiple Join & Subquery & Not IN
+Select s2.name
+From Salesperson s2
+Where s2.name NOT IN
+(Select s1.name 
+From Orders o1 Left Join Salesperson s1 Using(sales_id)
+Left Join Company c1 Using(com_id)
+Where c1.name="Red");
+
+##### Method 2. Subquery & Not IN <62%>
+Select s1.name
+From salesperson s1
+Where s1.sales_id NOT IN (Select o1.sales_id 
+                          From orders o1 Join company c1 Using(com_id)
+                          Where c1.name = "RED");
+
+
+#### 610. Triangle Judgement
+##### Method 1. Case When...And <94.31%>
+Select*, (Case When x+y>z And x+z>y And y+z>x Then "Yes"
+          Else "No" End) As triangle
+From triangle;
+
+##### Method 2. If
+Select*, If(x+y>z And x+z>y And y+z>x,"Yes","No") As triangle
+From triangle;
+
+
+
+#### 613. Shortest Distance in a Line
+##### Method 1.
+##### Method 2.
+
+#### 619. Biggest Single Number
+##### Method 1.
+##### Method 2.
