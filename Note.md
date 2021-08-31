@@ -7,3 +7,9 @@
 
 #### Count num to calculate %, like accept rate - 597. Friend Requests I: Overall Acceptance Rate
 ##### can use window function: cte
+
+
+## Sum(Case When...) 
+## Subquert
+## CTE
+## Window Function: Running Total, rows, rank
