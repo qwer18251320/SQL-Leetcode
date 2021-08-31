@@ -196,19 +196,58 @@ Where rnk=1;
 
 #### 595. Big Countries
 ##### Method 1.
+Select name, population, area
+From World
+Where population > 25000000 Or area > 3000000;
 
-
-
-##### Method 2.
-
+##### Method 2. Union
+Select name, population, area
+From World
+Where population > 25000000
+Union
+Select name, population, area
+From World
+Where area > 3000000;
 
 
 #### 596. Classes More Than 5 Students
-##### Method 1.
-##### Method 2.
+##### Method 1. Use subquery <240 ms, 82%>
+Select class 
+From
+(Select class, Count(Distinct student) As num
+From courses
+Group By class) As freq
+Where num >=5;
+
+##### Method 2. Use Distinct - consider duplicate <374 ms>
+Select class
+From courses
+Group By class
+Having Count(Distinct student) >= 5;
 
 
 
 #### 597. Friend Requests I: Overall Acceptance Rate
-##### Method 1.
+##### Method 1. two window function - with cte1 and cte2 <391ms 80%>
+With cte1 As 
+(Select Count(Distinct requester_id, accepter_id) As accept
+From FriendRequest f1 Right Join RequestAccepted r1
+ On sender_id=requester_id 
+ And send_to_id=accepter_id),
+ cte2 As
+ (Select Count(Distinct sender_id, send_to_id) As send
+ From FriendRequest f2)
+ 
+
+Select Round(Ifnull(accept/send,0),2) As accept_rate
+ From cte1, cte2;
+
 ##### Method 2.
+Select Round(
+    IFNULL(
+    (Select Count(*)
+     From (Select Distinct requester_id, accepter_id 
+           From RequestAccepted) As accept) /
+    (Select Count(*)
+     From (Select Distinct sender_id, send_to_id
+           From FriendRequest) As send),0), 2) As accept_rate;
