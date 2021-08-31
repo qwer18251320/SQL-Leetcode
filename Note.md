@@ -13,3 +13,4 @@
 ## Subquert
 ## CTE
 ## Window Function: Running Total, rows, rank
+### Rank() Over (Partition By category Order By...ASC|DESC) As xx
