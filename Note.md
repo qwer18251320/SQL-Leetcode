@@ -6,3 +6,4 @@
 ##### need to consider duplicate - use distinct
 
 #### Count num to calculate %, like accept rate - 597. Friend Requests I: Overall Acceptance Rate
+##### can use window function: cte
