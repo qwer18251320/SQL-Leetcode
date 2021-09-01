@@ -1,5 +1,6 @@
 ## SQL-Leetcode
 #### consecutive problems - 603. Consecutive Available Seats
+##### 1. Self Join
 
 #### Combine Tables
 #### Second highest salary - 176.window function
