@@ -304,9 +304,31 @@ From triangle;
 
 
 #### 613. Shortest Distance in a Line
-##### Method 1.
-##### Method 2.
+##### Method 1. Min(Abs()), self join
+Select Min(Abs(p1.x-p2.x)) As shortest
+From point p1 Join point p2
+On p1.x != p2.x;
+
+##### Method 2. Where
+Select Min(Abs(x1.x-x2.x)) As shortest
+From point p1, point p2
+Where p1.x != p2.x;
+
 
 #### 619. Biggest Single Number
-##### Method 1.
-##### Method 2.
+##### Method 1. cte
+With cte As
+(Select num, Count(num) As cnt
+From my_numbers
+Group By num)
+
+Select Max(num) As num
+From cte
+Where cnt=1;
+
+##### Method 2. Subquery
+Select Max(num) As num
+From (Select num
+      From my_numbers
+      Group By num
+      Having Count(num)=1) As n1;
