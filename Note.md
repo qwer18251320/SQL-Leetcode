@@ -21,3 +21,6 @@
 ###餘數 Mod(column, 2) 餘數
 ###(id%2 > 0) 餘數
 
+#### Update table
+Update Table.name 
+Set column= Case When ...etc
