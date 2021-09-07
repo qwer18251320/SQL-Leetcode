@@ -18,4 +18,6 @@
 ### Rank() Over (Partition By category Order By...ASC|DESC) As xx
 #### Sum() | Avg() | Max() | Min() - window function
 
+###餘數 Mod(column, 2) 餘數
+###(id%2 > 0) 餘數
 
