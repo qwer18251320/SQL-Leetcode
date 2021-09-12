@@ -351,20 +351,59 @@ Where (id%2 > 0) And description NOT LIKE "%boring%"
 Order By rating DESC;
 
 #### 627. Swap Salary
-##### Method 1.
-##### Method 2.
+##### Method 1. Update Table.name Set column=
+Update Salary
+Set Sex = Case When sex="m" Then "f" Else "m" End;
+
+##### Method 2. If(column= , , ) <75%>
+Update Salary
+Set Sex = IF (sex = "m", "f", "m");
+
+
+
+
 
 #### 1050. Actors and Directors Who Cooperated At Least Three Times
-##### Method 1.
-##### Method 2.
+##### Method 1. <76%, 313ms>
+Select actor_id, director_id
+From ActorDirector
+Group By actor_id, director_id
+Having Count(*) >= 3
+Order By Count(*) DESC;
+
+##### Method 2. <92%, 293ms>
+Select actor_id, director_id
+From ActorDirector
+Group By actor_id, director_id
+Having Count(Distinct timestamp) >=3;
+
+
+
 
 #### 1068. Product Sales Analysis I
 ##### Method 1.
 Select product_name, year, price
 From Sales s1 Left Join Product p1 Using(product_id);
 
-##### Method 2.
+##### Method 2. subquery and distinct - because multiple product_id in sales table
+Select Product_name, year, price
+From Product Join (Select Distinct(product_id), year, price
+                   From Sales) As s1
+Using (product_id);
+
 
 #### 1069. Product Sales Analysis II
-##### Method 1.
-##### Method 2.
+##### Method 1. Distinct - because multiple product_id in Sales
+Select Distinct(product_id), Sum(quantity) As total_quantity
+From Sales
+Group By product_id;
+
+##### Method 2. <54.19%>
+Select Distinct(product_id), Sum(quantity) As total_quantity
+From Sales
+Group By product_id
+Having Sum(quantity)
+Order By product_id;
+
+
+
