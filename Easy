@@ -475,9 +475,32 @@ Where rnk=1;
 
 
 #### 1083. Sales Analysis II
-##### Method 1.
+##### Method 1. not in subquery <85%>
+Select Distinct(buyer_id)
+From Sales s1 Join Product p1 Using(product_id)
+Where product_name = "S8" 
+And buyer_id NOT IN (Select buyer_id
+                     From Sales s1 Join Product p1 Using(product_id)
+                     Where product_name = "iPhone");
+
 ##### Method 2.
+Select buyer_id
+From Sales s1 Join Product p1 Using(product_id)
+Group By buyer_id
+Having Sum(Case When product_name = "S8" Then 1 Else 0 End) > 0 
+And Sum(Case WHEN product_name = "iPhone" Then 1 Else 0 End)=0;
+
 
 #### 1084. Sales Analysis III
-##### Method 1.
-##### Method 2.
+##### Method 1. min and max to select the actual product_id
+Select s1.product_id, product_name  
+From Sales s1 Join Product p1 Using(product_id)
+Group By s1.product_id
+Having Min(sale_date) >= "2019-01-01" And Max(sale_date) <= "2019-03-31";
+
+##### Method 2. Not Between a and b
+Select product_id, product_name  
+From Product p1
+Where product_id NOT IN (Select product_id
+                         From Sales
+                         Where Sale_date NOT BETWEEN "2019-01-01" And "2019-03-31");
