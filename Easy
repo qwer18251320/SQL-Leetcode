@@ -407,3 +407,77 @@ Order By product_id;
 
 
 
+#### 1075. Project Employees I
+##### Method 1. Not Right Join - like union or one by one 
+Select project_id, Round(Avg(experience_years),2) As average_years
+From Project p1 Join Employee e1 Using(employee_id)
+Group By project_id
+Having Avg(experience_years)
+Order By project_id;
+
+##### Method 2. cte - 89%
+With cte As
+(Select* From Project p1 Join Employee e1 Using(employee_id))
+
+Select project_id, Round(Avg(experience_years),2) As average_years
+From cte
+Group By project_id
+Order By project_id;
+
+
+#### 1076. Project Employees II
+##### Method 1. window function, dense_rank() over (order by)
+With cte As
+(Select project_id, Dense_Rank() Over (Order By count(employee_id) DESC) As rnk
+From Project p1
+Group By project_id)
+
+Select project_id
+From cte
+Where rnk=1;
+
+##### Method 2. Subquery <96%>
+Select project_id
+From Project p2
+Group By project_id
+Having Count(employee_id) = 
+(Select Count(employee_id)
+ From Project p1
+ Group By project_id
+ Having Count(employee_id)
+ Order By Count(employee_id) DESC
+ Limit 1);
+
+
+
+#### 1082. Sales Analysis I
+##### Method 1. Subquery <54%>
+Select seller_id
+From Sales
+Group By seller_id
+Having Sum(Price) = 
+(Select Sum(price) As total
+From Sales
+Group By seller_id
+Order By Sum(price) Desc
+Limit 1);
+
+##### Method 2. windown function <53%>
+With cte As
+(Select seller_id, Dense_Rank() Over (Order By Sum(Price) DESC) As rnk
+ From Sales
+ Group By seller_id)
+ 
+Select seller_id
+From cte
+Where rnk=1;
+
+
+
+#### 1083. Sales Analysis II
+##### Method 1.
+##### Method 2.
+
+#### 1084. Sales Analysis III
+##### Method 1.
+##### Method 2.
