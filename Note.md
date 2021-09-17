@@ -24,3 +24,12 @@
 #### Update table
 Update Table.name 
 Set column= Case When ...etc
+
+
+
+####Date diff - date_sub and interval
+##### Method 2. Betweem Date_sub("", interval #day) and actual day <97%>
+Select activity_date As day, Count(Distinct user_id) As active_users
+From Activity
+Where activity_date Between Date_sub("2019-07-27", INTERVAL 29 DAY) AND '2019-07-27'
+Group By activity_date;
