@@ -504,3 +504,96 @@ From Product p1
 Where product_id NOT IN (Select product_id
                          From Sales
                          Where Sale_date NOT BETWEEN "2019-01-01" And "2019-03-31");
+
+
+
+
+
+
+#### 1113. Reported Posts
+##### Method 1. <76%>
+Select extra As report_reason, Count(Distinct post_id) As report_count
+From Actions
+Where action = "report" And action_date="2019-07-04"
+Group By extra;
+
+##### Method 2. DateDiff(a,b)=
+Select extra As report_reason, Count(Distinct post_id) As report_count
+From Actions
+Where action = "report" 
+And DateDiff("2019-07-05", action_date)=1
+Group By extra;
+
+
+
+
+#### 1141. User Activity for the Past 30 Days I
+##### Method 1.
+Select activity_date As day, Count(Distinct user_id) As active_users
+From Activity
+Where activity_date >= "2019-06-28" And activity_date<="2019-07-27"
+Group By activity_date;
+
+##### Method 2. Betweem Date_sub("", interval #day) and actual day <97%>
+Select activity_date As day, Count(Distinct user_id) As active_users
+From Activity
+Where activity_date Between Date_sub("2019-07-27", INTERVAL 29 DAY) AND '2019-07-27'
+Group By activity_date;
+
+
+#### 1142. User Activity for the Past 30 Days II
+##### Method 1.
+Select Ifnull(Round(Sum(num)/Count(user_id),2),0.00) As average_sessions_per_user
+From (Select user_id, Count(Distinct session_id) AS num
+      From Activity
+      Where activity_date Between Date_sub("2019-07-27", Interval 29 DAY) And "2019-07-27"
+      Group By user_id) AS A1;
+      
+##### Method 2.
+Select IfNull(Round(Count(Distinct session_id)/Count(Distinct user_id),2),0.00) As average_sessions_per_user
+From Activity
+Where activity_date <= "2019-07-27" And activity_date >= "2019-06-28";
+
+
+#### 1148. Article Views I
+##### Method 1. 
+Select Distinct(author_id) As id
+From Views
+Where author_id=viewer_id
+Order By 1 ASC;
+
+##### Method 2.
+Select Distinct(author_id) As id
+From Views
+Where author_id=viewer_id
+Group By author_id
+Order By author_id ASC;
+
+
+#### 1173. Immediate Food Delivery I
+##### Method 1. round(avg(case))) <80.28%>
+Select Round(AVG(Case When order_date = customer_pref_delivery_date Then 1 Else 0 End)*100,2) AS immediate_percentage
+From Delivery;
+
+##### Method 2.
+Select Round(Sum(status="immediate")/Count(*)*100,2) As immediate_percentage
+From (Select (Case WHEN order_date = customer_pref_delivery_date Then "immediate" Else "scheduled" End) As status
+From Delivery) As s1;
+
+#### Method 3. two subquery
+Select Round((Select Count(Distinct delivery_id) From Delivery Where order_date = customer_pref_delivery_date)/ 
+(Select Count(Distinct delivery_id) From Delivery)*100,2) As immediate_percentage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
