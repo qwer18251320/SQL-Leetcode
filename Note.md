@@ -33,3 +33,11 @@ Select activity_date As day, Count(Distinct user_id) As active_users
 From Activity
 Where activity_date Between Date_sub("2019-07-27", INTERVAL 29 DAY) AND '2019-07-27'
 Group By activity_date;
+
+
+
+#### count specific / count total = percentage
+##### 1173. Immediate Food Delivery I
+
+
+#### Reform data formaty - use Sum(case when...)
