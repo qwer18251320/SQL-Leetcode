@@ -586,9 +586,58 @@ Select Round((Select Count(Distinct delivery_id) From Delivery Where order_date 
 
 
 
+#### 1179. Reformat Department Table
+##### Method 1. <64%>
+Select id, 
+Sum(Case When month="Jan" Then revenue Else null End) As Jan_Revenue,
+Sum(Case When month="Feb" Then revenue Else null End) As Feb_Revenue,
+Sum(Case When month="Mar" Then revenue Else null End) As Mar_Revenue,
+Sum(Case When month="Apr" Then revenue Else null End) As Apr_Revenue,
+Sum(Case When month="May" Then revenue Else null End) As May_Revenue,
+Sum(Case When month="Jun" Then revenue Else null End) As Jun_Revenue,
+Sum(Case When month="Jul" Then revenue Else null End) As Jul_Revenue,
+Sum(Case When month="Aug" Then revenue Else null End) As Aug_Revenue,
+Sum(Case When month="Sep" Then revenue Else null End) As Sep_Revenue,
+Sum(Case When month="Oct" Then revenue Else null End) As Oct_Revenue,
+Sum(Case When month="Nov" Then revenue Else null End) As Nov_Revenue,
+Sum(Case When month="Dec" Then revenue Else null End) As Dec_Revenue
+From Department
+Group By id
+Order By id Desc;
+
+##### Method 2.
 
 
 
+#### 1211. Queries Quality and Percentage
+##### Method 1.
+Select query_name, Round(Avg(rating/position),2) As quality,
+Round(Sum(Case When rating <3 Then 1 Else 0 End)/Count(query_name)*100,2) As poor_query_percentage
+From Queries
+Group By query_name;
+
+##### Method 2.
+Select query_name, Round(Avg(rating/position),2) As quality,
+Round(100*Avg(rating < 3), 2) As poor_query_percentage
+From Queries
+Group By query_name;
+
+
+
+
+#### 1241. Number of Comments per Post
+##### Method 1.
+##### Method 2.
+
+
+#### 1251. Average Selling Price
+##### Method 1.
+##### Method 2.
+
+
+#### 1280. Students and Examinations
+##### Method 1.
+##### Method 2.
 
 
 
