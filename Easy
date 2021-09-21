@@ -631,13 +631,98 @@ Group By query_name;
 
 
 #### 1251. Average Selling Price
-##### Method 1.
-##### Method 2.
+##### Method 1. Subquery join table 
+Select t1.product_id, Round(total/Sum(units),2) As average_price
+From (Select product_id, 
+      Sum(Case When purchase_date Between start_date And end_date 
+          Then price*units Else 0 End) As total
+      From Prices Join UnitsSold Using(product_id)
+      Group By product_id) As t1
+Join UnitsSold Using(product_id)
+Group By product_id;
+
+##### Method 2. Left Join
+Select u1.product_id, 
+Round(Sum(price*units)/Sum(units),2) As average_price
+From Prices p1 Left Join UnitsSold u1 Using(product_id)
+Where purchase_date Between start_date And end_date
+Group By u1.product_id;
 
 
 #### 1280. Students and Examinations
 ##### Method 1.
 ##### Method 2.
+
+#### 1294. Weather Type in Each Country
+##### Method 1. case when
+Select country_name, 
+(Case When Avg(weather_state) <= 15 Then "Cold"
+ When Avg(weather_state) >= 25 Then "Hot" Else "Warm" End) As weather_type
+ From Weather w1 Join Countries c1 Using(country_id)
+ Where Month(day)=11
+ Group By w1.country_id;
+ 
+##### Method 2. WHERE DAT BETWEEN
+Select country_name, 
+(Case When Avg(weather_state) <= 15 Then "Cold"
+ When Avg(weather_state) >= 25 Then "Hot" Else "Warm" End) As weather_type
+ From Weather w1 Join Countries c1 Using(country_id)
+ Where Day Between "2019-11-01" AND "2019-11-30"
+ Group By w1.country_id;
+ 
+ 
+#### 1303. Find the Team Size
+##### Method 1. window function - cte
+With cte As
+(Select team_id, Count(employee_id) As team_size
+From Employee e1
+Group By team_id)
+
+Select employee_id, team_size
+From Employee e2 Left Join cte Using(team_id);
+
+##### Method 2. subquery
+Select employee_id, team_size
+From Employee e2 Left Join (Select team_id, Count(employee_id) As team_size
+                            From Employee e1
+                            Group By team_id) As team 
+                            Using(team_id);
+                            
+                            
+#### 1322. Ads Performance
+##### Method 1.
+##### Method 2.
+
+#### 1327. List the Products Ordered in a Period
+##### Method 1. month(column)=xx
+Select product_name, Sum(unit) As unit
+From Orders o1 Left Join Products p1 Using(product_id)
+Where Month(order_date)=2
+Group By o1.product_id
+Having Sum(unit)>=100
+Order By unit DESC;
+
+##### Method 2. Left(month,7)="2020-02"
+Select product_name, Sum(unit) As unit
+From Orders o1 Left Join Products p1 Using(product_id)
+Where Left(order_date, 7) = "2020-02"
+Group By o1.product_id
+Having Sum(unit)>=100
+Order By unit DESC;
+
+
+#### 1350. Students With Invalid Departments
+##### Method 1. Where Not In
+Select id, name
+From Students
+Where department_id NOT IN (Select id From Departments);
+
+##### Method 2. Where Is Null
+Select s1.id, s1.name
+From Students s1 Left Join Departments d1 
+On s1.department_id = d1.id
+Where d1.name IS Null;
+
 
 
 
