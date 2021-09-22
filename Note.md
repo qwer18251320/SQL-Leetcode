@@ -41,3 +41,4 @@ Group By activity_date;
 
 
 #### Reform data formaty - use Sum(case when...)
+#### Group_Concat(column)
