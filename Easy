@@ -743,8 +743,20 @@ And kids_content="Y";
 ##### Method 2. Use Where xxx between a and b
 
 
-#### 
+#### 1435. Create a Session Bar Chart
 ##### Method 1.
+Select "[0-5>" As bin, Sum(Case When duration/60<5 Then 1 Else 0 End) As total
+From Sessions
+Union
+Select "[5-10>" As bin, Sum(Case When duration/60<10 And duration/60 >=5 Then 1 Else 0 End) As total
+From Sessions
+Union
+Select "[10-15>" As bin, Sum(Case When duration/60<15 And duration/60 >=10 Then 1 Else 0 End) As total
+From Sessions
+Union
+Select "15 or more" As bin, Sum(Case When duration/60>=15 Then 1 Else 0 End) As total
+From Sessions
+
 ##### Method 2.
 
 #### 
