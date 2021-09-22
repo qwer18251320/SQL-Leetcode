@@ -727,7 +727,26 @@ Where d1.name IS Null;
 
 
 
+#### 1484. Group Sold Products By The Date
+##### Method 1. Group_Concat(column)
+Select sell_date, Count(Distinct product) As num_sold, Group_Concat(Distinct product) As products
+From Activities
+Group By sell_date;
+
+#### 1495. Friendly Movies Streamed Last Month
+##### Method 1. Left(column,7)
+Select Distinct(title)
+From TVProgram t1 Right Join Content c1 Using(content_id)
+Where Left(program_date,7)="2020-06" And content_type="Movies"
+And kids_content="Y";
+
+##### Method 2. Use Where xxx between a and b
 
 
+#### 
+##### Method 1.
+##### Method 2.
 
-
+#### 
+##### Method 1.
+##### Method 2.
