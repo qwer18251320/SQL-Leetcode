@@ -36,6 +36,11 @@ Group By activity_date;
 
 
 
+### Bin
+select "xxx" as column name, 
+
+
+
 #### count specific / count total = percentage
 ##### 1173. Immediate Food Delivery I
 
