@@ -1,0 +1,8 @@
+📌 1757. Recyclable and Low Fat Products
+Write an SQL query to find the ids of products that are both low fat and recyclable.
+
+• SQL
+Select product_id
+From Products
+Where low_fats = "Y"
+And recyclable = "Y"
