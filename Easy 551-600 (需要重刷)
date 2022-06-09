@@ -1,3 +1,18 @@
+📌 584. Find Customer Referee
+Write an SQL query to report the names of the customer that are not referred by the customer with id = 2.
+
+• SQL (# 解題要注意null)
+Select name
+From Customer
+Where referee_id != 2 Or referee_id IS NULL
+
+• SQL (#Not In)
+Select name
+From Customer
+Where referee_id Not In (Select id 
+                        From Customer
+                        Where referee_id = 2)
+
 📌 595. Big Countries
 A country is big if:
   it has an area of at least three million (i.e., 3000000 km2), or
