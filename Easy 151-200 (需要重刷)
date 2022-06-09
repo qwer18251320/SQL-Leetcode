@@ -24,4 +24,18 @@ Where e1.id = e2.managerId
 And e2.salary>e1.salary
 
 📌 182. Duplicate Emails
+Write an SQL query to report all the duplicate emails.
+
+• SQL (General)
+Select email
+From Person
+Group By Email
+Having count(*) >1
+
+• SQL (2 select)
+Select email
+From (Select email, Count(email) As cnt
+From Person
+Group By email) As p1
+Where cnt>1
 
