@@ -8,5 +8,20 @@ From Person P Left Join Address A
 On P.personID = A.personID
 
 
+📌 181. Employees Earning More Than Their Managers
+Write an SQL query to find the employees who earn more than their managers.
+
+• SQL (e1, e2)
+Select e2.name As employee
+From Employee e1, Employee e2
+Where e1.id = e2.managerId
+And e2.salary>e1.salary
+
+• SQL (Join)
+Select e2.name As employee
+From Employee e1 Join Employee e2
+Where e1.id = e2.managerId
+And e2.salary>e1.salary
+
 📌 182. Duplicate Emails
 
