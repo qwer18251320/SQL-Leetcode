@@ -17,28 +17,3 @@ Union
 Select name, population, area
 From World WHERE population >= 25000000
 
-
-📌 182. Duplicate Emails
-• SQL (多括號 & Group By)
-Select email
-From
-(Select email As Email, Count(email) As cnt
-From Person
-Group By email) As p1
-Where cnt>1
-
-• SQL (With function)
-With cte 
-As (Select email, count(*) As cnt
-    From Person
-    Group By Email
-   )
-Select email
-From cte
-Where cnt>1
-
-• SQL (General解法 count(*))
-Select email
-From Person
-Group By Email
-Having count(*) >1
