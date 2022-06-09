@@ -9,7 +9,7 @@ Where referee_id != 2 Or referee_id IS NULL
 • SQL (#Not In)
 Select name
 From Customer
-Where referee_id Not In (Select id 
+Where id Not In (Select id 
                         From Customer
                         Where referee_id = 2)
 
