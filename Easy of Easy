@@ -38,3 +38,12 @@ From (Select class, Count(Distinct student) As cnt
       Group By class) c1
 Where cnt >=5
 
+
+
+# Date
+📌 511. Game Play Analysis I
+Write an SQL query to report the first login date for each player.
+• SQL
+Select player_id, Min(event_date) As first_login
+From Activity
+Group By player_id
