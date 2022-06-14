@@ -1,0 +1,16 @@
+# Delete Function
+📌 196. Delete Duplicate Emails
+解法1. 一個套一個
+Delete
+From Person
+Where id NOT IN (Select *
+                 From 
+                 (Select Min(id)
+                From Person p1
+                Group By email) as p1)
+                
+解法2. 
+Delete p1
+From person p1, person p2
+Where p1.email=p2.email
+And p1.id>p2.id
