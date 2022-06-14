@@ -8,6 +8,27 @@ Where low_fats = "Y"
 And recyclable = "Y"
 
 
+
+# 以下為類似題型
+
+📌 586. Customer Placing the Largest Number of Orders
+Write an SQL query to find the customer_number for the customer who has placed the largest number of orders.
+• SQL
+Select customer_number
+From Orders
+Group By customer_number
+Having Count(order_number) 
+Order By Count(order_number) DESC
+Limit 1
+
+• SQL - 簡化版
+Select customer_number
+From Orders
+Group By customer_number
+Order By Count(*) DESC
+Limit 1
+
+
 📌 596. Classes More Than 5 Students
 Write an SQL query to report all the classes that have at least five students.
 • SQL
@@ -16,3 +37,4 @@ From (Select class, Count(Distinct student) As cnt
       From courses
       Group By class) c1
 Where cnt >=5
+
