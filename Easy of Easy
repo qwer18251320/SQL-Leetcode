@@ -6,3 +6,13 @@ Select product_id
 From Products
 Where low_fats = "Y"
 And recyclable = "Y"
+
+
+📌 596. Classes More Than 5 Students
+Write an SQL query to report all the classes that have at least five students.
+• SQL
+Select class 
+From (Select class, Count(Distinct student) As cnt
+      From courses
+      Group By class) c1
+Where cnt >=5
