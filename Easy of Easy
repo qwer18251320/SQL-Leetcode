@@ -15,6 +15,14 @@ Where author_id = viewer_id
 Order By id Asc
 
 
+📌 620. Not Boring Movies
+Select*
+From Cinema
+Where description != "boring"
+And Mod(id,2) != 0
+Order By rating Desc
+
+
 
 
 
@@ -39,6 +47,7 @@ Order By Count(*) DESC
 Limit 1
 
 
+
 📌 596. Classes More Than 5 Students
 Write an SQL query to report all the classes that have at least five students.
 • SQL
@@ -47,6 +56,9 @@ From (Select class, Count(Distinct student) As cnt
       From courses
       Group By class) c1
 Where cnt >=5
+
+
+
 
 
 
