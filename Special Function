@@ -25,3 +25,34 @@ From Weather w1, Weather w2
 Where Datediff(w2.recordDate,w1.recordDate)=1
 And w2.temperature > w1.temperature
 
+
+
+# String Processing Functions #
+
+
+
+
+# Union #
+
+📌 1965. Employees With Missing Information
+解法1. Union
+Select employee_id
+From Employees e1 
+Where employee_id Not In (Select employee_id From Salaries)
+Union
+Select employee_id
+From Salaries s1
+Where employee_id Not In (Select employee_id From Employees)
+Order By employee_id ASC
+
+解法2. Join & Union
+Select e1.employee_id 
+From Employees e1 Left Join Salaries s1 
+On e1.employee_id = s1.employee_id
+Where salary IS NULL
+Union
+Select s2.employee_id
+From Employees e2 Right Join Salaries s2
+On e2.employee_id = s2.employee_id
+Where name IS NULL
+Order By employee_id ASC
