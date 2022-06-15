@@ -8,6 +8,16 @@ Where low_fats = "Y"
 And recyclable = "Y"
 
 
+📌 1148. Article Views I
+Select Distinct(author_id) As id
+From Views v1
+Where author_id = viewer_id
+Order By id Asc
+
+
+
+
+
 
 # 以下為類似題型
 
@@ -40,7 +50,8 @@ Where cnt >=5
 
 
 
-# Early Date
+# Early Date #
+
 📌 511. Game Play Analysis I
 Write an SQL query to report the first login date for each player.
 • SQL
@@ -57,3 +68,4 @@ From Person p1 Left Join Address a1 Using(personId)
 解法2. On
 Select firstName, lastName, IfNull(city, null) As city, Ifnull(state, null) As state
 From Person p1 Left Join Address a1 Using(personId)
+
