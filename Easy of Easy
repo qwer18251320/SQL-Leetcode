@@ -47,3 +47,9 @@ Write an SQL query to report the first login date for each player.
 Select player_id, Min(event_date) As first_login
 From Activity
 Group By player_id
+
+
+📌 175. Combine Two Tables
+Select firstName, lastName, IfNull(city, null) As city, Ifnull(state, null) As state
+From Person p1 Left Join Address a1 Using(personId)
+
