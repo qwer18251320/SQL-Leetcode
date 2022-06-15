@@ -50,6 +50,10 @@ Group By player_id
 
 
 📌 175. Combine Two Tables
+解法1. Using
 Select firstName, lastName, IfNull(city, null) As city, Ifnull(state, null) As state
 From Person p1 Left Join Address a1 Using(personId)
 
+解法2. On
+Select firstName, lastName, IfNull(city, null) As city, Ifnull(state, null) As state
+From Person p1 Left Join Address a1 Using(personId)
