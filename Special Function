@@ -40,6 +40,14 @@ From Users
 Order By user_id ASC
 
 
+📌 1484. Group Sold Products By The Date
+解法 1. Group_Concat(Distinct column Order By)
+Select sell_date, Count(Distinct product) AS num_sold, 
+Group_concat(Distinct product 
+             Order By product ASC) As products
+From Activities a1
+Group By sell_date
+Order By sell_date ASC
 
 
 
