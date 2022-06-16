@@ -15,3 +15,18 @@ Select employee_id, If(employee_id % 2 = 1
                        And name Not Like"M%", salary, 0) As bonus
 From Employees
 Order By employee_id ASC
+
+
+📌 1050. Actors and Directors Who Cooperated At Least Three Times
+# Group By 可以兩個組合
+解法 1. 
+Select actor_id, director_id
+From ActorDirector
+Group By actor_id, director_id
+Having Count(*)>=3
+
+解法 2. concat(a,b)
+Select actor_id, director_id
+From ActorDirector
+Group By actor_id, director_id
+Having Count(CONCAT(actor_id, director_id)) >= 3
