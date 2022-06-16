@@ -1,0 +1,17 @@
+📌1873. Calculate Special Bonus
+解法 1. Case When
+Select employee_id, 
+Case When employee_id % 2 = 1 
+And name Not Like"M%"
+Then Salary
+Else 0
+End
+As bonus
+From Employees
+Order By employee_id ASC
+
+解法 2. If
+Select employee_id, If(employee_id % 2 = 1 
+                       And name Not Like"M%", salary, 0) As bonus
+From Employees
+Order By employee_id ASC
