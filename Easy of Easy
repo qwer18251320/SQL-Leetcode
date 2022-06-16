@@ -22,7 +22,13 @@ Where description != "boring"
 And Mod(id,2) != 0
 Order By rating Desc
 
-
+📌 1407. Top Travellers
+# 用Left Join 而非right, 因為要所有人的名字都有，可能有人沒有旅行
+Select name, Ifnull(Sum(distance),0) As travelled_distance 
+From Users u1 Left Join Rides r1 
+On u1.id = r1.user_id
+Group By user_id
+Order By travelled_distance Desc, name ASC
 
 
 
