@@ -28,12 +28,24 @@ And w2.temperature > w1.temperature
 
 
 # String Processing Functions #
+📌 1667. Fix Names in a Table
+解法 1. Concat(), Upper(), Lower, Length()
+Select user_id, concat(Upper(Left(name,1)),Lower(Right(name,Length(name)-1))) As name
+From Users
+Order By user_id ASC
+
+解法 2. Concat(), substring(column,position, #)
+Select user_id, concat(Upper(Substring(name,1,1)),Lower(Substring(name,2, Length(name)-1))) As name
+From Users
+Order By user_id ASC
+
+
+
 
 
 
 
 # Union #
-
 📌 1965. Employees With Missing Information
 解法1. Union
 Select employee_id
