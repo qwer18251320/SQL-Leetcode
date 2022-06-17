@@ -39,6 +39,11 @@ Group By date_id, make_name
 
 
 
+📌 1741. Find Total Time Spent by Each Employee
+Select event_day As day, emp_id, Sum(out_time-in_time) As total_time
+From Employees
+Group By event_day, emp_id
+
 
 📌 1587. Bank Account Summary II
 • Windown Function
