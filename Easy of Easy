@@ -63,6 +63,13 @@ Group By t1.account
 Having Sum(amount)>10000
 
 
+📌 1729. Find Followers Count
+Select user_id, Count(Distinct follower_id) As followers_count
+From Followers
+Group By user_id
+Order By user_id
+
+
 
 
 # 以下為類似題型
