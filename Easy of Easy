@@ -33,6 +33,27 @@ Order By travelled_distance Desc, name ASC
 
 
 
+
+📌 1587. Bank Account Summary II
+• Windown Function
+With cte As
+(Select name, Sum(amount) As balance
+From Users u1 Right Join Transactions t1 Using(account)
+Group By t1.account)
+
+Select* 
+From cte
+Where balance>10000
+
+• Regular
+Select name, Sum(amount) As balance
+From Users u1 Right Join Transactions t1 Using(account)
+Group By t1.account
+Having Sum(amount)>10000
+
+
+
+
 # 以下為類似題型
 
 📌 586. Customer Placing the Largest Number of Orders
