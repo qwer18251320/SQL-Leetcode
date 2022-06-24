@@ -1,4 +1,4 @@
-# Delete Function
+## Delete Function ##
 📌 196. Delete Duplicate Emails
 解法1. 一個套一個
 Delete
@@ -16,7 +16,10 @@ Where p1.email=p2.email
 And p1.id>p2.id
 
 
-## Update
+
+
+
+## Update ##
 📌 627. Swap Salary
 解法1. 
 Update salary 
@@ -35,9 +38,7 @@ SET
 
 
 
-
-
-# Union #
+## Union ##
 📌 1965. Employees With Missing Information
 解法1. Union
 Select employee_id
@@ -63,8 +64,33 @@ Order By employee_id ASC
 
 
 
+## Reformate/Rearrange Table 翻轉 ##
+📌 1179. Reformat Department Table
+Select id,
+Sum(Case When month="Jan" Then revenue Else Null End) As Jan_Revenue,
+Sum(Case When month="Feb" Then revenue Else Null End) As Feb_Revenue,
+Sum(Case When month="Mar" Then revenue Else Null End) As Mar_Revenue,
+Sum(Case When month="Apr" Then revenue Else Null End) As Apr_Revenue,
+Sum(Case When month="May" Then revenue Else Null End) As May_Revenue,
+Sum(Case When month="Jun" Then revenue Else Null End) As Jun_Revenue,
+Sum(Case When month="Jul" Then revenue Else Null End) As Jul_Revenue,
+Sum(Case When month="Aug" Then revenue Else Null End) As Aug_Revenue,
+Sum(Case When month="Sep" Then revenue Else Null End) As Sep_Revenue,
+Sum(Case When month="Oct" Then revenue Else Null End) As Oct_Revenue,
+Sum(Case When month="Nov" Then revenue Else Null End) As Nov_Revenue,
+Sum(Case When month="Dec" Then revenue Else Null End) As Dec_Revenue
+From Department
+Group By id
+Order By id ASC
 
-#  Window Function #
+
+
+
+
+
+
+
+##  Window Function ##
 # Rank #
 📌 176. Second Highest Salary
 Select Max(Salary) As SecondHighestSalary
