@@ -16,14 +16,21 @@ Where p1.email=p2.email
 And p1.id>p2.id
 
 
+## Update
+📌 627. Swap Salary
+解法1. 
+Update salary 
+Set 
+sex = Case Sex
+When "m" Then "f"
+Else "m" 
+End
 
-
-# Dateddiff
-📌 197. Rising Temperature
-Select w2.id
-From Weather w1, Weather w2
-Where Datediff(w2.recordDate,w1.recordDate)=1
-And w2.temperature > w1.temperature
+解法2. If function
+UPDATE
+    salary
+SET
+    sex = IF(sex = 'm', 'f', 'm');
 
 
 
