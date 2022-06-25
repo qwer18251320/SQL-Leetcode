@@ -30,3 +30,20 @@ Select actor_id, director_id
 From ActorDirector
 Group By actor_id, director_id
 Having Count(CONCAT(actor_id, director_id)) >= 3
+
+
+📌 1581. Customer Who Visited but Did Not Make Any Transactions
+解法 1. 
+Select customer_id, Count(Distinct visit_id) As count_no_trans
+From (Select v1.visit_id, v1.customer_id
+      From Visits v1 Left Join Transactions t1 
+      ON v1.visit_id = t1.visit_id
+      Where transaction_id IS NULL) As o1
+Group By customer_id
+
+解法 2. 
+Select customer_id, Count(customer_id) As count_no_trans
+From Visits Left Join Transactions
+On Visits.visit_id = Transactions.visit_id
+WHERE amount IS NULL
+Group By customer_id;
