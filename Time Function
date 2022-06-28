@@ -44,3 +44,17 @@ Select activity_date As day, Count(Distinct user_id) As active_users
 From Activity
 Where activity_date Between Date_sub("2019-07-27", INTERVAL 29 DAY) AND '2019-07-27'
 Group By activity_date;
+
+📌 1084. Sales Analysis III
+解法 1.
+Select s1.product_id, product_name  
+From Product p1 Right Join Sales s1 Using(product_id)
+Group By s1.product_id
+
+解法 2.
+Select product_id, product_name  
+From Product p1
+Where product_id NOT IN (Select product_id
+                         From Sales
+                         Where Sale_date NOT BETWEEN "2019-01-01" And "2019-03-31");
+Having Min(sale_date) >= "2019-01-01" And Max(sale_date) <= "2019-03-31";
