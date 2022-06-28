@@ -7,7 +7,6 @@ And w2.temperature > w1.temperature
 
 
 # Group_concat
-
 📌 1484. Group Sold Products By The Date
 解法 1. 
 Select sell_date, Count(Distinct product) AS num_sold, 
@@ -21,3 +20,12 @@ Order By sell_date ASC
 Select sell_date, Count(Distinct product) As num_sold, Group_Concat(Distinct product) As products
 From Activities
 Group By sell_date;
+
+
+# Year
+📌 1890. The Latest Login in 2020
+Select user_id, Max(time_stamp) As last_stamp
+From Logins
+Where Year(time_stamp) = "2020"
+Group By user_id
+Order By user_id
