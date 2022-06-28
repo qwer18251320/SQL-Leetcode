@@ -62,6 +62,36 @@ On e2.employee_id = s2.employee_id
 Where name IS NULL
 Order By employee_id ASC
 
+## Reformate + Union ##
+📌 1795. Rearrange Products Table
+解法1. 
+Select product_id, store, price
+From
+(Select product_id, "store1" As store, store1 As price
+From Products
+Union
+Select product_id, "store2" As store, store2 As price
+From Products
+Union
+Select product_id, "store3" As store, store3 As price
+From Products) As p1
+Where price IS NOT NULL
+
+
+解法2. 
+Select product_id, "store1" As store, store1 As price 
+From Products
+Where store1 IS NOT NULL
+UNION
+Select product_id, "store2" As store, store2 As price 
+From Products
+Where store2 IS NOT NULL
+UNION
+Select product_id, "store3" As store, store3 As price 
+From Products
+Where store3 IS NOT NULL
+Order By product_id;
+
 
 
 ## Reformate/Rearrange Table 翻轉 ##
