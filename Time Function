@@ -29,3 +29,18 @@ From Logins
 Where Year(time_stamp) = "2020"
 Group By user_id
 Order By user_id
+
+
+# Date
+📌 1141. User Activity for the Past 30 Days I
+解法 1.
+Select activity_date As day, Count(Distinct user_id) As active_users
+From Activity a1
+Where activity_date Between "2019-06-28" And "2019-07-27"
+Group By activity_date
+
+解法 2. Date_sub("2019-07-27", INTERVAL 29 DAY)
+Select activity_date As day, Count(Distinct user_id) As active_users
+From Activity
+Where activity_date Between Date_sub("2019-07-27", INTERVAL 29 DAY) AND '2019-07-27'
+Group By activity_date;
