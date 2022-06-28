@@ -4,3 +4,20 @@ Select w2.id
 From Weather w1, Weather w2
 Where Datediff(w2.recordDate,w1.recordDate)=1
 And w2.temperature > w1.temperature
+
+
+# Group_concat
+
+📌 1484. Group Sold Products By The Date
+解法 1. 
+Select sell_date, Count(Distinct product) AS num_sold, 
+Group_concat(Distinct product 
+             Order By product ASC) As products
+From Activities a1
+Group By sell_date
+Order By sell_date ASC
+
+解法 2. 
+Select sell_date, Count(Distinct product) As num_sold, Group_Concat(Distinct product) As products
+From Activities
+Group By sell_date;
