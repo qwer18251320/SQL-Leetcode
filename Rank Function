@@ -1,0 +1,36 @@
+##  Window Function ##
+# Rank #
+📌 176. Second Highest Salary
+
+# 解法1. 
+Select Max(Salary) As SecondHighestSalary
+From Employee
+Where salary < (Select Max(Salary)
+                From Employee) 
+
+Select Max(Salary) As SecondHighestSalary
+From Employee
+Where Salary not in (Select Max(Salary) From Employee);
+
+# 解法2.
+With cte As
+(Select *, Dense_Rank() Over (Order By Salary Desc) As rnk
+From Employee)
+
+Select Max(Salary) As SecondHighestSalary
+From cte
+Where rnk=2
+
+
+# Nth Highest Rank #
+📌 177. Nth Highest Salary
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      # Write your MySQL query statement below.
+      Select Max(s.salary)
+      From (Select Dense_Rank() Over (Order By Salary Desc) As drank, salary
+           From Employee) As s
+      Where s.drank = N
+  );
+END
