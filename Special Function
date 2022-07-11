@@ -116,26 +116,3 @@ Order By id ASC
 
 
 
-
-
-
-
-##  Window Function ##
-# Rank #
-📌 176. Second Highest Salary
-Select Max(Salary) As SecondHighestSalary
-From Employee
-Where salary < (Select Max(Salary)
-                From Employee) 
-
-Select Max(Salary) As SecondHighestSalary
-From Employee
-Where Salary not in (Select Max(Salary) From Employee);
-
-With cte As
-(Select *, Dense_Rank() Over (Order By Salary Desc) As rnk
-From Employee)
-
-Select Max(Salary) As SecondHighestSalary
-From cte
-Where rnk=2
