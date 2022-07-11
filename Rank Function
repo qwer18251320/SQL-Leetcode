@@ -34,3 +34,40 @@ BEGIN
       Where s.drank = N
   );
 END
+
+
+
+📌 178. Rank Scores
+Select score, Dense_Rank() Over (Order By Score Desc) As "rank"
+From Scores
+
+
+
+📌 180. Consecutive Numbers
+Select Distinct(l1.num) As ConsecutiveNums
+From Logs l1, Logs l2, Logs l3
+Where l1.id-l2.id=1
+And l2.id-l3.id=1
+And l1.num-l2.num=0
+And l2.Num - l3.Num = 0;
+And l2.Num - l3.Num = 0;
+
+
+📌 184. Department Highest Salary
+解法1.
+Select d1.name As Department, e1.name As Employee, salary
+From Employee e1 Left Join Department d1 
+On d1.id = e1.departmentId
+Where (departmentId, salary) In
+(Select departmentId, Max(salary)
+From Employee
+Group By departmentId)
+
+
+解法2. rank()
+Select d1.name As Department, e1.name As Employee, e1.salary
+From department d1 Right Join 
+(Select name, salary, Rank() Over (PARTITION BY departmentId Order By salary Desc) As rnk,departmentId
+ From Employee) e1 
+On d1.id=e1.departmentId
+Where e1.rnk=1
