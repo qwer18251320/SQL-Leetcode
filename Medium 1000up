@@ -1,0 +1,54 @@
+📌 1158. Market Analysis I
+
+# Left Join 結合 and year
+Select u1.user_id As buyer_id, u1.join_date, Count(o1.order_id) As orders_in_2019
+From Orders o1 Right Join Users u1 
+On o1.buyer_id = u1.user_id
+And Year(o1.order_date) = "2019"
+Group By u1.user_id
+
+# Left(column, 4) = year
+Select user_id As buyer_id, join_date, IFNULL(num,0) As orders_in_2019
+From
+(Select user_id, join_date
+From Users) As u1
+Left Join 
+(Select buyer_id, Count(*) As num
+From Orders
+Where Left(order_date,4) = 2019
+Group By buyer_id) As o1
+On user_id = buyer_id;
+
+
+
+
+
+📌 1393. Capital Gain/Loss
+# 解法1.
+Select stock_name, Sell+Buy As capital_gain_loss
+From(
+Select stock_name, Sum(price) As Sell
+From Stocks
+Where operation = "Sell"
+Group By stock_name) As tot1 
+Left Join
+(Select stock_name, -Sum(price) As Buy
+From Stocks
+Where operation = "Buy"
+Group By stock_name) As tot2
+Using(stock_name)
+
+
+# 解法2. 簡單的 sum if 
+SELECT stock_name, SUM(IF(operation='Buy',-price,price)) capital_gain_loss 
+FROM Stocks
+GROUP BY stock_name
+
+
+# 解法3. case when
+Select stock_name, Sum(
+    case when operation = 'Buy' Then -price
+    when operation = 'Sell' Then price
+    end) as capital_gain_loss
+From Stocks
+group by stock_name
