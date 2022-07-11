@@ -1,0 +1,18 @@
+📌 608. Tree Node
+Select id, 
+(Case When id = (Select id 
+                 From tree 
+                 Where p_id IS NULL) Then "Root"
+When id In (Select p_id From tree) Then "Inner"
+Else "Leaf" End) As Type
+From tree;
+
+📌 626. Exchange Seats
+Select 
+(Case When id%2 != 0 And counts = id Then id 
+When id%2 != 0 And counts != id Then id+1
+Else id-1 End) As id, student
+From seat, (Select Count(*) As counts From seat) As s1
+Order By id ASC;
+
+#MOD (COULMN, 2)
