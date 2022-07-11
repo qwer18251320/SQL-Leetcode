@@ -1,0 +1,20 @@
+📌 1158. Market Analysis I
+
+# Left Join 結合 and year
+Select u1.user_id As buyer_id, u1.join_date, Count(o1.order_id) As orders_in_2019
+From Orders o1 Right Join Users u1 
+On o1.buyer_id = u1.user_id
+And Year(o1.order_date) = "2019"
+Group By u1.user_id
+
+# Left(column, 4) = year
+Select user_id As buyer_id, join_date, IFNULL(num,0) As orders_in_2019
+From
+(Select user_id, join_date
+From Users) As u1
+Left Join 
+(Select buyer_id, Count(*) As num
+From Orders
+Where Left(order_date,4) = 2019
+Group By buyer_id) As o1
+On user_id = buyer_id;
