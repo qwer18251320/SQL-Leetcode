@@ -1,3 +1,71 @@
+#####     二刷     #####
+📌 181. Employees Earning More Than Their Managers
+Write an SQL query to find the employees who earn more than their managers.
+
+• SQL (e1, e2)
+Select e2.name As employee
+From Employee e1, Employee e2
+Where e1.id = e2.managerId
+And e2.salary>e1.salary
+
+• SQL (Join)
+Select e2.name As employee
+From Employee e1 Join Employee e2
+Where e1.id = e2.managerId
+And e2.salary>e1.salary
+
+
+📌 182. Duplicate Emails
+Write an SQL query to report all the duplicate emails.
+
+• SQL (General)
+Select email
+From Person
+Group By Email
+Having count(*) >1
+
+• SQL (2 select)
+Select email
+From (Select email, Count(email) As cnt
+From Person
+Group By email) As p1
+Where cnt>1
+
+• SQL (Window Function)
+With cte As
+(Select email, count(email) As cnt
+From Person 
+Group By email)
+
+Select email As Email
+From cte
+Where cnt>1
+
+
+📌 183. Customers Who Never Order
+Write an SQL query to report all customers who never order anything.
+
+• SQL (Not In)
+Select name As Customers
+From Customers
+Where id Not IN 
+(Select Distinct(customerId) As id
+From Orders)
+
+• SQL (Lefty Join & Is Null)
+Select name As Customers
+From Customers c1 Left Join Orders o1 
+On c1.id = o1.customerId
+Where o1.customerId is null
+
+
+
+
+
+
+
+
+
 📌 1757. Recyclable and Low Fat Products
 Write an SQL query to find the ids of products that are both low fat and recyclable.
 
