@@ -47,3 +47,21 @@ From Visits Left Join Transactions
 On Visits.visit_id = Transactions.visit_id
 WHERE amount IS NULL
 Group By customer_id;
+
+
+
+
+
+📌 577. Employee Bonus
+解法 1.
+Select name, bonus
+From Employee e1 Left Join Bonus b1
+Using(empId)
+Where bonus IS NULL 
+Or Bonus <1000
+
+解法 2. ifnull() 避免排除掉null
+Select name, bonus
+From Employee e1 Left Join Bonus b1
+Using(empId)
+Where IfNull(bonus,0) <1000
