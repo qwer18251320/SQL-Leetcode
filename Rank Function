@@ -71,3 +71,22 @@ From department d1 Right Join
  From Employee) e1 
 On d1.id=e1.departmentId
 Where e1.rnk=1
+
+
+📌 512. Game Play Analysis II
+解法 1. 第一時刻想的方法絕對是錯的，要先找出min date, 在找device_id
+Select player_id, device_id
+From Activity
+Where (player_id, event_date) In
+(Select player_id, Min(event_date) As event_date
+From Activity 
+Group By player_id) 
+
+解法 2. rank ()
+With cte As
+(Select*, Rank() Over(Partition By player_id Order By event_date ASC) As rnk
+From Activity)
+
+Select player_id, device_id
+From cte
+Where rnk =1
