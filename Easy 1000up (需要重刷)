@@ -77,3 +77,12 @@ Else "No" End) As  triangle
 Select*, If (x+y > z And y+z > x And x+z>y, "Yes", "No") As  triangle
 From Triangle
 From Triangle
+
+
+📌 613. Shortest Distance in a Line
+解法 1. abs與min的先後順序
+Select min(abs(p2.x-p1.x)) as shortest
+From Point p1, Point p2
+Where p1.x != p2.x
+
+
