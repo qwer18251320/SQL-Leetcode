@@ -233,3 +233,15 @@ From Person p1 Left Join Address a1 Using(personId)
 Select firstName, lastName, IfNull(city, null) As city, Ifnull(state, null) As state
 From Person p1 Left Join Address a1 Using(personId)
 
+
+📌 619. Biggest Single Number
+解法 1.
+Select Max(num) As num
+From (
+Select num, Count(*) As cnt
+From MyNumbers
+Group By num) As m1
+Where cnt=1
+
+解法 2. 
+還可以寫成 cte, 或者是Having count(num)=1
