@@ -90,3 +90,17 @@ From Activity)
 Select player_id, device_id
 From cte
 Where rnk =1
+
+
+
+
+📌 1082. Sales Analysis I
+解法 1.
+With cte As
+(Select seller_id, sum(price) As total, rank() Over(Order By sum(price) Desc) AS rnk
+From Sales
+Group By seller_id)
+
+Select seller_id
+From cte
+Where rnk=1
