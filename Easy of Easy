@@ -245,3 +245,44 @@ Where cnt=1
 
 解法 2. 
 還可以寫成 cte, 或者是Having count(num)=1
+
+📌 1068. Product Sales Analysis I
+解法 1. 
+Select product_name, year, price
+From Sales s1 Left Join Product p1
+Using (product_id)
+
+解法 2. window function
+還沒寫
+
+
+📌 1069. Product Sales Analysis II
+解法 1.
+Select product_id, sum(quantity) As total_quantity
+From Sales s1 
+Group By product_id
+
+解法 2. window function
+還沒寫
+
+
+📌 1075. Project Employees I
+解法 1. 
+Select project_id, Round(Avg(experience_years),2) As average_years
+From Project p1 Left Join Employee e1
+Using (employee_id)
+Group By project_id
+
+解法 2. window function
+With cte As
+(Select* From Project p1 Join Employee e1 Using(employee_id))
+
+Select project_id, Round(Avg(experience_years),2) As average_years
+From cte
+Group By project_id
+Order By project_id;
+
+
+
+
+ 
