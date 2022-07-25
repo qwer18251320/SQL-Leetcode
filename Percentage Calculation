@@ -1,3 +1,5 @@
+##### 很常使用case when & cte #####
+
 📌 1173. Immediate Food Delivery I
 解法 1.
 With cte As
@@ -24,3 +26,31 @@ select query_name,
        round(100*Avg(rating < 3), 2) as poor_query_percentage
 from Queries
 group by 
+
+📌 2026. Low-Quality Problems
+解法 1.
+With cte As
+(Select problem_id, likes/(likes+dislikes)*100 As per
+From Problems)
+
+Select problem_id
+From cte
+Where per < 60
+Order by problem_id ASC
+
+
+
+📌 2072. The Winner University
+解法 1.
+With cte As
+(Select Sum(Case When n1.score>=90 Then 1 Else 0 End) As NewYork,
+Sum(Case When c1.score>=90 Then 1 Else 0 End) As California
+From NewYork n1, California c1)
+
+Select (Case When NewYork>California Then "New York University"
+       When NewYork < California Then "California University" Else "No Winner" End) As winner
+From cte
+
+
+解法 2. 
+
