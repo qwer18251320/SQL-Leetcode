@@ -1,0 +1,26 @@
+📌 1173. Immediate Food Delivery I
+解法 1.
+With cte As
+(Select (Case When order_date = customer_pref_delivery_date Then "immediate" Else "scheduled" End) As cnt
+From Delivery)
+
+Select Round(Count(*)/(Select count(cnt) From cte)*100,2) As "immediate_percentage"
+From cte
+Where cnt="immediate"
+
+解法 2.
+
+
+📌 1211. Queries Quality and Percentage
+解法 1. Sum(Case When...Then 1 Else 0)
+Select Distinct(query_name), Round(AVG(rating/position),2) As quality, 
+Round(Sum(Case When rating<3 Then 1 Else 0 End)/Count(*)*100,2) As poor_query_percentage
+From Queries
+Group By query_name
+
+解法 2.
+select query_name, 
+       round(avg(rating/position), 2) as quality, 
+       round(100*Avg(rating < 3), 2) as poor_query_percentage
+from Queries
+group by 
