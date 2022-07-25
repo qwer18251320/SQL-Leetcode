@@ -6,6 +6,25 @@ Where Datediff(w2.recordDate,w1.recordDate)=1
 And w2.temperature > w1.temperature
 
 
+📌 1113. Reported Posts
+解法 1. datediff
+Select extra As report_reason, Count(Distinct post_id) As report_count
+From Actions
+Where action = "report"
+And Datediff("2019-07-05", action_date) = 1
+Group By extra
+
+解法 2. 
+Select extra As report_reason, Count(Distinct post_id) As report_count
+From Actions
+Where action = "report"
+And action_date = "2019-07-04"
+Group By extra
+
+
+
+
+
 # Group_concat
 📌 1484. Group Sold Products By The Date
 解法 1. 
