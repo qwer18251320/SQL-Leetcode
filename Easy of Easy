@@ -283,6 +283,21 @@ Group By project_id
 Order By project_id;
 
 
+📌 2329. Product Sales Analysis V
+解法 1.
+Select user_id, Sum(quantity*price) As spending
+From Sales s1 Left Join Product p1
+Using(product_id)
+Group By user_id
+Order By spending DESC, user_id ASC
 
-
+看看有沒有解法2. 
  
+
+📌  2082. The Number of Rich Customers
+解法 1.
+Select Count(Distinct customer_id) As rich_count
+From Store
+Where amount > 500
+
+看看有沒有解法2. 
