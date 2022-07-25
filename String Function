@@ -11,6 +11,20 @@ From Users
 Order By user_id ASC
 
 
+📌 1683. Invalid Tweets
+解法 1. length()
+Select tweet_id
+From Tweets 
+Where length(content)>15
+
+解法 2. char_length()
+Select tweet_id
+From Tweets
+Where Char_Length(content) > 15;
+
+
+
+
 📌 1484. Group Sold Products By The Date
 解法 1. Group_Concat(Distinct column Order By)
 Select sell_date, Count(Distinct product) AS num_sold, 
