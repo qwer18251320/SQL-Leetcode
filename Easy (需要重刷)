@@ -68,6 +68,24 @@ Where IfNull(bonus,0) <1000
 
 
 
+📌 603. Consecutive Available Seats
+解法 1.
+Select Distinct(c2.seat_id)
+From cinema c1, cinema c2
+Where c1.free=1
+And c2.free=1
+And Abs(c1.seat_id-c2.seat_id)=1
+And Abs(c2.seat_id-c1.seat_id)=1
+
+解法 2.
+Select Distinct(c2.seat_id)
+From cinema c1 Join cinema c2
+On Abs(c2.seat_id-c1.seat_id)=1 
+And c1.free=1 
+And c2.free=1
+Order By seat_id ASC;
+
+
 📌 610. Triangle Judgement
 解法 1. case when...and...and
 Select*, (Case When x+y > z And y+z > x And x+z>y Then "Yes"
@@ -85,4 +103,23 @@ Select min(abs(p2.x-p1.x)) as shortest
 From Point p1, Point p2
 Where p1.x != p2.x
 
+📌 1082. Sales Analysis I
+解法 1.
+With cte As
+(Select seller_id, sum(price) As total, rank() Over(Order By sum(price) Desc) AS rnk
+From Sales
+Group By seller_id)
 
+Select seller_id
+From cte
+Where rnk=1
+
+解法 2. Limit 
+Select seller_id
+From Sales 
+Group By seller_id
+Having Sum(price) = (Select Sum(price)
+                    From Sales
+                    Group By seller_id
+                    Order By Sum(price) Desc
+                    Limit 1)
