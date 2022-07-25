@@ -39,6 +39,32 @@ SET
 
 
 ## Union ##
+📌 1789. Primary Department for Each Employee
+解法 1. 
+Select employee_id, department_id
+From Employee
+Where primary_flag = "Y"
+Union
+Select employee_id, department_id
+From Employee
+Where primary_flag = "N"
+And employee_id Not In (Select employee_id
+                        From Employee
+                        Where primary_flag = "Y")
+
+
+解法 2.
+Select employee_id, department_id
+From Employee
+Where primary_flag = "Y"
+Group By employee_id
+UNION
+Select employee_id, department_id
+From Employee
+Group By employee_id 
+Having Count(employee_id) = 1;
+
+
 📌 1965. Employees With Missing Information
 解法1. Union
 Select employee_id
@@ -61,6 +87,11 @@ From Employees e2 Right Join Salaries s2
 On e2.employee_id = s2.employee_id
 Where name IS NULL
 Order By employee_id ASC
+
+
+
+
+
 
 ## Reformate + Union ##
 📌 1795. Rearrange Products Table
