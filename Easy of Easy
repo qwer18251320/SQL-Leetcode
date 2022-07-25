@@ -310,3 +310,36 @@ From Customers
 Where year=2021
 Group By customer_id
 Having Sum(revenue)>0
+
+
+📌 1327. List the Products Ordered in a Period
+解法 1. 
+Select Distinct(product_name), Sum(unit) As unit
+From Orders o1 Left Join Products p1 Using(product_id)
+Where Left(order_date,7) = "2020-02" ###Month(order_date) = 2###
+Group By o1.product_id
+Having Sum(unit)>=100
+
+📌 1350. Students With Invalid Departments
+解法 1.
+Select id, name
+From Students s1
+Where department_id Not In (Select id From Departments)
+
+解法 2.
+Select s1.id, s1.name
+From Students s1 Left Join Departments d1 
+On s1.department_id = d1.id
+Where d1.name IS Null;
+
+📌 1378. Replace Employee ID With The Unique Identifier
+解法 1.
+Select Ifnull(unique_id, null) As unique_id, name
+From Employees e1 Left Join EmployeeUNI e2 
+Using(id)
+
+解法 2.
+Select IfNull(EmployeeUNI.unique_id, null) As unique_id, Employees.name
+From Employees Left Join EmployeeUNI
+On Employees.id = EmployeeUNI.id
+Order By Employees.name ASC;
