@@ -123,3 +123,4 @@ Having Sum(price) = (Select Sum(price)
                     Group By seller_id
                     Order By Sum(price) Desc
                     Limit 1)
+
