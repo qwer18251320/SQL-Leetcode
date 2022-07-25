@@ -135,3 +135,11 @@ Order By employee_id
 
 解法 2.
 
+📌 1294. Weather Type in Each Country
+Select country_name, (Case When Avg(weather_state) <= 15 Then "Cold"
+                      When Avg(weather_state) >= 25 Then "Hot"
+                      Else "Warm" End) As weather_type
+From Countries c1 Right Join Weather w1 Using(country_id)
+Where Left(day,7) = "2019-11"
+Group By w1.country_id
+
