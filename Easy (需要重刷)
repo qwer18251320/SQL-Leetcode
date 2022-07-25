@@ -143,3 +143,18 @@ From Countries c1 Right Join Weather w1 Using(country_id)
 Where Left(day,7) = "2019-11"
 Group By w1.country_id
 
+📌 1303. Find the Team Size
+解法 1.
+With cte As
+(Select team_id, Count(employee_id) As team_size
+From Employee e1
+Group By team_id)
+
+Select employee_id, team_size
+From Employee e2 Left Join cte Using(team_id);
+
+解法 2.
+Select employee_id, team_size
+From Employee e1 Left Join (Select team_id, Count(employee_id) As team_size
+                            From Employee
+                            Group By team_id) As e2 Using (team_id) 
