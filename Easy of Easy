@@ -301,3 +301,12 @@ From Store
 Where amount > 500
 
 看看有沒有解法2. 
+
+
+
+📌 1821. Find Customers With Positive Revenue this Year
+Select customer_id
+From Customers
+Where year=2021
+Group By customer_id
+Having Sum(revenue)>0
