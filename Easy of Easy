@@ -104,7 +104,7 @@ From World WHERE population >= 25000000
 
 
 
-
+#####     尚未二刷     #####
 📌 1757. Recyclable and Low Fat Products
 Write an SQL query to find the ids of products that are both low fat and recyclable.
 
@@ -179,8 +179,8 @@ Order By user_id
 
 
 
-# 以下為類似題型
 
+#####     以下為類似題型(尚未二刷)     #####
 📌 586. Customer Placing the Largest Number of Orders
 Write an SQL query to find the customer_number for the customer who has placed the largest number of orders.
 • SQL
