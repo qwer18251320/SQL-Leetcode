@@ -158,3 +158,28 @@ Select employee_id, team_size
 From Employee e1 Left Join (Select team_id, Count(employee_id) As team_size
                             From Employee
                             Group By team_id) As e2 Using (team_id) 
+
+
+📌 1511. Customer Order Frequency
+解法 1.
+With cte As
+(Select customer_id, name, Left(order_date,7) As month, Sum(quantity*price) As tlt
+From Orders o1 Left Join Product p1 Using(product_id)
+Left Join Customers c1 Using(customer_id)
+Where Left(order_date,7)="2020-07"
+Or Left(order_date,7)="2020-06"
+Group By customer_id, Left(order_date,7)
+Having tlt>=100)
+
+Select customer_id, name
+From cte
+Group By customer_id
+Having Count(*)=2
+
+解法 2.
+Select customer_id, name
+From Customers Join Orders Using(customer_id) 
+JOIN Product Using(product_id)
+Group By customer_id
+Having Sum(IF(Left(order_date, 7) = "2020-06", quantity,0)*price) >=100 
+And Sum(IF(Left(order_date, 7) = "2020-07", quantity,0)*price) >=100;
