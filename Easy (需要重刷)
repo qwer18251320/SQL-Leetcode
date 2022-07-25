@@ -124,3 +124,14 @@ Having Sum(price) = (Select Sum(price)
                     Order By Sum(price) Desc
                     Limit 1)
 
+📌 1978. Employees Whose Manager Left the Company
+解法 1. 
+Select employee_id
+From Employees
+Where salary < 30000
+And manager_id Not In (Select Distinct employee_id
+                   From Employees)
+Order By employee_id
+
+解法 2.
+
