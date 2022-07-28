@@ -183,3 +183,21 @@ JOIN Product Using(product_id)
 Group By customer_id
 Having Sum(IF(Left(order_date, 7) = "2020-06", quantity,0)*price) >=100 
 And Sum(IF(Left(order_date, 7) = "2020-07", quantity,0)*price) >=100;
+
+
+📌 2026. Low-Quality Problems
+解法 1.
+Select problem_id
+From Problems
+Where likes/(likes+dislikes)*100 < 60
+Order by problem_id ASC
+
+解法 2.
+With cte As
+(Select problem_id, likes/(likes+dislikes)*100 As per
+From Problems)
+
+Select problem_id
+From cte
+Where per < 60
+Order by problem_id ASC
