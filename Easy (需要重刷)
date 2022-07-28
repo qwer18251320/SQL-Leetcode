@@ -187,11 +187,11 @@ And Sum(IF(Left(order_date, 7) = "2020-07", quantity,0)*price) >=100;
 
 📌 1211. Queries Quality and Percentage 📌
 解法 1.
-select query_name, 
-       round(avg(rating/position), 2) as quality, 
-       round(100*Avg(rating < 3), 2) as poor_query_percentage
+select Query_name, 
+       Round(Avg(rating/position), 2) as quality, 
+       Round(Avg(rating < 3)*100, 2) as poor_query_percentage
 From Queries
-Group by query_name
+Group by Query_name
 
 解法 2.
 Select Distinct(query_name), 
