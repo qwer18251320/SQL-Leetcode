@@ -200,6 +200,36 @@ Round(Sum(Case When rating<3 Then 1 Else 0 End)/Count(*)*100,2) As poor_query_pe
 From Queries
 Group By query_name
 
+📌 2072. The Winner University 📌
+解法 1. 
+With cte As
+(Select Sum(Case When n1.score>=90 Then 1 Else 0 End) As NewYork,
+Sum(Case When c1.score>=90 Then 1 Else 0 End) As California
+From NewYork n1, California c1)
+
+Select (Case When NewYork>California Then "New York University"
+       When NewYork < California Then "California University" Else "No Winner" End) As winner
+From cte
+
+解法 2. 
+Select 
+(Case 
+When 
+(Select Sum(Case When n1.score>=90 Then 1 Else 0 End) As NewYork From NewYork n1) > 
+(Select Sum(Case When c1.score>=90 Then 1 Else 0 End) As California From California c1) Then "New York University"
+When
+(Select Sum(Case When n1.score>=90 Then 1 Else 0 End) As NewYork From NewYork n1) < 
+(Select Sum(Case When c1.score>=90 Then 1 Else 0 End) As California From California c1) Then "California University" 
+Else "No Winner" End) As winner
+
+解法 3. 
+SELECT CASE WHEN SUM(if(N.score>=90,1,0)) > SUM(if(C.score>=90,1,0)) THEN 'New York University'
+            WHEN SUM(if(N.score>=90,1,0)) < SUM(if(C.score>=90,1,0)) THEN 'California University'
+            ELSE 'No Winner'
+            END AS winner
+FROM NewYork AS N, California AS C
+
+
 
 📌 2026. Low-Quality Problems
 解法 1.
