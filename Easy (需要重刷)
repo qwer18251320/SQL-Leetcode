@@ -160,7 +160,7 @@ From Employee e1 Left Join (Select team_id, Count(employee_id) As team_size
                             Group By team_id) As e2 Using (team_id) 
 
 
-📌 1511. Customer Order Frequency
+📌 1511. Customer Order Frequency 📌
 解法 1.
 With cte As
 (Select customer_id, name, Left(order_date,7) As month, Sum(quantity*price) As tlt
@@ -183,6 +183,22 @@ JOIN Product Using(product_id)
 Group By customer_id
 Having Sum(IF(Left(order_date, 7) = "2020-06", quantity,0)*price) >=100 
 And Sum(IF(Left(order_date, 7) = "2020-07", quantity,0)*price) >=100;
+
+
+📌 1211. Queries Quality and Percentage 📌
+解法 1.
+select query_name, 
+       round(avg(rating/position), 2) as quality, 
+       round(100*Avg(rating < 3), 2) as poor_query_percentage
+From Queries
+Group by query_name
+
+解法 2.
+Select Distinct(query_name), 
+Round(AVG(rating/position),2) As quality, 
+Round(Sum(Case When rating<3 Then 1 Else 0 End)/Count(*)*100,2) As poor_query_percentage
+From Queries
+Group By query_name
 
 
 📌 2026. Low-Quality Problems
