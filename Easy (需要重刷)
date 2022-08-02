@@ -263,3 +263,46 @@ Where id IN (Select managerId As id
             From Employee
             Group By managerId
             Having Count(*)>=5)
+
+📌 574. Winning Candidate
+解法 1.
+With cte As
+(Select candidateId, c1.name, Count(Distinct v1.id) As tlt
+From Vote v1 Right Join Candidate c1
+On candidateId=c1.id
+Group By candidateId
+Order By tlt Desc
+Limit 1)
+
+Select name
+From cte
+
+解法 2.
+Select c1.name
+From Vote v1 Right Join Candidate c1
+On candidateId=c1.id
+Group By candidateId
+Having Count(Distinct v1.id)
+Order By Count(Distinct v1.id) Desc
+Limit 1
+
+📌 578. Get Highest Answer Rate Question
+解法 1.
+With cte As
+(Select question_id, Round(Sum(action="answer")/Sum(action="show"),2) As rate
+From SurveyLog
+Group By question_id)
+
+Select question_id As survey_log
+From cte
+Order By rate DESC, question_id ASC
+Limit 1
+
+解法 2. 
+Select question_id As survey_log
+From SurveyLog
+Group By question_id
+Order By Round(Sum(action="answer")/Sum(action="show"),2) DESC, question_id ASC
+Limit 1
+
+解法 2. 
