@@ -16,3 +16,23 @@ From seat, (Select Count(*) As counts From seat) As s1
 Order By id ASC;
 
 #MOD (COULMN, 2)
+
+### 一個表有，另一個表無，合併要注意沒有的數值 ###
+📌 580. Count Student Number in Departments
+解法 1. 
+With cte As
+(Select s1.dept_id, Count(student_id) As student_number
+From Student s1 
+Group By s1.dept_id)
+
+Select dept_name, Ifnull(student_number,0) As student_number
+From Department d1 Left Join cte
+Using(dept_id)
+Order By student_number DESC, dept_name ASC
+
+解法 2. left outer join 也可以
+Select d1.dept_name, Ifnull(Count(s1.student_id),0) As student_number
+From Department d1 Left Join Student s1 
+Using(dept_id)
+Group By d1.dept_name
+Order By student_number DESC, dept_name ASC
