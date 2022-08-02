@@ -247,3 +247,19 @@ Select problem_id
 From cte
 Where per < 60
 Order by problem_id ASC
+
+📌 570. Managers with at Least 5 Direct Reports
+解法 1.
+Select e1.name
+From Employee e1 Left Join Employee e2
+On e1.id=e2.managerId
+Group By e1.Id
+Having Count(e2.managerId)>=5
+
+解法 2.
+Select name
+From Employee
+Where id IN (Select managerId As id
+            From Employee
+            Group By managerId
+            Having Count(*)>=5)
