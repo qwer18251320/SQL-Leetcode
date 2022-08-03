@@ -121,3 +121,22 @@ From Sales
 Where (product_id, year) In (Select Sales.product_id, Min(year) As year
                              From Sales
                              Group By product_id)
+
+📌 1112. Highest Grade For Each Student
+解法 1.
+With cte As
+(Select*, rank() Over(Partition By student_id Order By grade Desc, course_id ASC) AS rnk
+From Enrollments e1)
+
+Select student_id, course_id, grade
+From Cte
+Where rnk =1
+
+解法 2. 
+Select student_id, Min(course_id) As course_id, grade
+From Enrollments
+Where (student_id, grade) In (Select student_id, Max(grade) As grade
+                              From Enrollments
+                              Group By student_id)
+Group By student_id, grade
+Order By student_id ASC;
