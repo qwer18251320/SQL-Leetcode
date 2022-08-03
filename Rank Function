@@ -104,3 +104,20 @@ Group By seller_id)
 Select seller_id
 From cte
 Where rnk=1
+
+📌 1070. Product Sales Analysis III
+解法 1.
+With cte As
+(Select*, rank() over(Partition By product_id order By year ASC) As rnk
+From Sales)
+
+Select product_id, year As first_year, quantity, price
+From cte
+Where rnk =1
+
+解法 2.
+Select product_id, year As first_year, quantity, price
+From Sales
+Where (product_id, year) In (Select Sales.product_id, Min(year) As year
+                             From Sales
+                             Group By product_id)
