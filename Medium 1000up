@@ -52,3 +52,24 @@ Select stock_name, Sum(
     end) as capital_gain_loss
 From Stocks
 group by stock_name
+
+
+📌 1045. Customers Who Bought All Products
+解法 1.
+With cte As
+(Select customer_id, Count(Distinct product_key) As cnt
+ From Customer c1
+Group By customer_id)
+
+Select customer_id 
+From cte
+Where cnt = (Select Count(Distinct Product_key) As num
+             From Product)
+             
+解法 2.
+Select customer_id
+From (Select customer_id, Count(Distinct product_key) As cnt
+      From Customer c1
+      Group By customer_id) As c1
+Where cnt = (Select Count(Distinct Product_key) As num
+             From Product)
