@@ -80,3 +80,25 @@ From Views
 Group By viewer_id, view_date
 Having Count(Distinct article_id) > 1
 Order By viewer_id ASC
+
+📌 1174. Immediate Food Delivery II
+解法 1.
+With cte As
+(Select *, 
+(Case When order_date = customer_pref_delivery_date Then "Immediate" Else "Scheduled" End) As type, 
+Rank() Over(Partition By customer_id Order By order_date ASC) As rnk
+From Delivery)
+
+Select Round(Sum(type="Immediate")/Count(*)*100,2) As immediate_percentage
+From cte
+Where rnk=1
+
+解法 2. 
+Select Round(Count(customer_id)/(Select Count(Distinct customer_id) From Delivery)*100,2)
+As immediate_percentage
+From Delivery
+Where (customer_id,order_date) IN
+(Select customer_id, Min(order_date) As order_date
+From Delivery
+Group By customer_id)
+And order_date = customer_pref_delivery_date;
