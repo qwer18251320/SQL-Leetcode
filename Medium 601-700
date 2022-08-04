@@ -36,3 +36,20 @@ From Department d1 Left Join Student s1
 Using(dept_id)
 Group By d1.dept_name
 Order By student_number DESC, dept_name ASC
+
+
+📌 612. Shortest Distance in a Plane
+解法 1.
+Select Min(Round(Sqrt(Pow(p1.x-p2.x,2)+Pow(p1.y-p2.y,2)),2)) As shortest
+From point_2d p1, point_2d p2
+Where p1.x != p2.x OR p1.y != p2.y;
+
+解法 2. 
+With cte AS
+(Select Round(SQRT(Pow(p1.x-p2.x,2)+Pow(p1.y-p2.y,2)),2) As dist
+From Point2D p1, Point2D p2
+Where p1.x != p2.x
+Or p1.y != p2.y)
+
+Select Min(dist) As shortest
+From cte
