@@ -102,3 +102,11 @@ Where (customer_id,order_date) IN
 From Delivery
 Group By customer_id)
 And order_date = customer_pref_delivery_date;
+
+📌 1193. Monthly Transactions I
+解法 1.
+Select Left(trans_date,7) As month, Country, Count(*) As trans_count, Sum(state="approved") As approved_count, Sum(amount) As trans_total_amount, Sum(Case When state="approved" Then amount Else 0 End) As approved_total_amount
+From Transactions
+Group By country, Left(trans_date,7)
+
+解法 2. 
