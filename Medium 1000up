@@ -73,3 +73,10 @@ From (Select customer_id, Count(Distinct product_key) As cnt
       Group By customer_id) As c1
 Where cnt = (Select Count(Distinct Product_key) As num
              From Product)
+
+📌 1149. Article Views II
+Select Distinct(viewer_id) As id
+From Views
+Group By viewer_id, view_date
+Having Count(Distinct article_id) > 1
+Order By viewer_id ASC
