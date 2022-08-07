@@ -140,3 +140,18 @@ Where (student_id, grade) In (Select student_id, Max(grade) As grade
                               Group By student_id)
 Group By student_id, grade
 Order By student_id ASC;
+
+
+#### Sum function combine with Over() function
+📌 534. Game Play Analysis III
+解法 1.
+Select player_id, event_date, 
+Sum(games_played) Over(Partition By player_id Order By event_date) As games_played_so_far 
+From Activity
+
+解法 2.
+SELECT A1.player_id, A1.event_date, SUM(A2.games_played) as games_played_so_far
+FROM Activity AS A1
+JOIN Activity AS A2
+ON A1.player_id = A2.player_id AND A1.event_date >= A2.event_date
+GROUP BY A1.player_id, A1.event_date
