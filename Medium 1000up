@@ -154,3 +154,27 @@ From (Select user_id, Min(activity_date) As login_date
       Group By user_id) As t1
 Where Datediff("2019-06-30", login_date) <= 90
 Group By login_date;
+
+📌 1126. Active Businesses
+解法 1.
+With cte As
+(Select event_type, Avg(occurences) As num
+From Events
+Group By event_type)
+
+Select e1.business_id
+From Events e1 Left Join cte
+Using(event_type)
+Where e1.occurences > num
+Group By e1.business_id
+Having Count(Distinct e1.event_type)>1
+
+解法 2. 
+Select business_id
+From events e1 Left Join (Select event_type, Avg(occurences) As average 
+                          From events
+                          Group By event_type) As e2
+On e1.event_type = e2.event_type
+Where e1.occurences > average 
+Group By business_id
+Having Count(e1.event_type) >1;
