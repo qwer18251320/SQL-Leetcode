@@ -110,3 +110,47 @@ From Transactions
 Group By country, Left(trans_date,7)
 
 解法 2. 
+
+
+📌 1077. Project Employees III
+解法 1.
+With cte As
+(Select project_id, Max(experience_years) As experience_years
+From Project p1 Left Join Employee e1 Using(employee_id)
+Group By project_id)
+
+Select p1.project_id, e1.employee_id
+From Project p1 Right Join Employee e1 Using(employee_id)
+Where (project_id, experience_years) In (Select project_id, experience_years
+                         From cte)
+                         
+解法 2. 
+Select p1.project_id, p1.employee_id
+From (Select* From Project Left Join Employee Using (employee_id)) As p1,
+(Select project_id, Max(experience_years) As years 
+ From Project Left Join Employee Using (employee_id) 
+ Group By project_id) As p2
+Where p1.project_id = p2.project_id
+And p1.experience_years = p2.years;
+
+📌 1107. New Users Daily Count
+解法 1.
+With cte As
+(Select user_id, Min(activity_date) As activity_date
+ From Traffic
+ Where activity="login"
+ Group By user_id)
+ 
+Select activity_date As login_date, Count(*) As user_count
+From cte
+Where Datediff("2019-06-30",activity_date)<=90
+Group By activity_date
+ 
+解法 2.
+Select Distinct(login_date), Count(user_id) As user_count 
+From (Select user_id, Min(activity_date) As login_date
+      From Traffic
+      Where activity = "login"
+      Group By user_id) As t1
+Where Datediff("2019-06-30", login_date) <= 90
+Group By login_date;
