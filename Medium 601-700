@@ -17,6 +17,17 @@ From Activity
 Group By player_id) As a2
 On a1.player_id = a2.player_id And DateDiff(event_date, first_log) = 1;
 
+📌 585. Investments in 2016
+Select Round(Sum(tiv_2016),2) As tiv_2016
+From Insurance
+Where tiv_2015 In (Select TIV_2015
+                  From insurance
+                  Group By TIV_2015
+                  Having Count(*)>1)
+And (LAT,LON) IN (Select LAT, LON
+                  From insurance 
+                  Group By LAT, LON
+                  Having Count(*)=1);
 
 📌 608. Tree Node
 Select id, 
