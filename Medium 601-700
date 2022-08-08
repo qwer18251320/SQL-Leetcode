@@ -1,3 +1,23 @@
+📌 550. Game Play Analysis IV
+解法 1. 
+Select Round(Count(Distinct a2.player_id)/
+             (Select Count(Distinct player_id) From Activity),2) As fraction
+From Activity a1, 
+(Select player_id, Min(event_date) As first_log
+From Activity
+Group By player_id) As a2
+Where Datediff(event_date,first_log)=1
+And a1.player_id=a2.player_id
+
+解法 2. 
+Select Round(Count(Distinct a2.player_id) / (Select Count(Distinct player_id) From Activity),2) As fraction
+From Activity a1 Left Join
+(Select player_id, Min(event_date) As first_log
+From Activity
+Group By player_id) As a2
+On a1.player_id = a2.player_id And DateDiff(event_date, first_log) = 1;
+
+
 📌 608. Tree Node
 Select id, 
 (Case When id = (Select id 
