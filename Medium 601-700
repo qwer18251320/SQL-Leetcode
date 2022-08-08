@@ -84,3 +84,21 @@ Or p1.y != p2.y)
 
 Select Min(dist) As shortest
 From cte
+
+📌 614. Second Degree Follower
+解法 1.
+Select followee As follower, Count(follower) As num
+From Follow
+Where followee In (Select follower As followee 
+                   From Follow 
+                   Group By follower
+                   Having Count(followee)>=1 )
+Group By followee
+Order By follower ASC
+
+解法 2.
+Select f1.follower, Count(Distinct f2.follower) As num
+From follow f1 Join follow f2  
+On f1.follower = f2.followee
+Group By f1.follower
+Order By f1.follower;
