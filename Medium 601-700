@@ -38,6 +38,36 @@ When id In (Select p_id From tree) Then "Inner"
 Else "Leaf" End) As Type
 From tree;
 
+📌 602. Friend Requests II: Who Has the Most Friends
+解法 1.
+Select id, Sum(cnt) As num
+From 
+((Select requester_id as id, Count(*) As cnt
+From RequestAccepted 
+Group By requester_id)
+Union All
+(Select accepter_id as id, Count(*) As cnt
+From RequestAccepted 
+Group By accepter_id)) t
+Group By id
+Order By num DESC
+Limit 1
+
+解法 2. 
+Select id, Count(*) As num
+From ((Select requester_id As id From RequestAccepted)
+Union All
+(Select accepter_id As id  From RequestAccepted)) As t
+Group By id
+Order By num Desc
+Limit 1
+
+
+
+
+
+
+
 📌 626. Exchange Seats
 Select 
 (Case When id%2 != 0 And counts = id Then id 
