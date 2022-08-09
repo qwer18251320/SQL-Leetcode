@@ -155,3 +155,24 @@ FROM Activity AS A1
 JOIN Activity AS A2
 ON A1.player_id = A2.player_id AND A1.event_date >= A2.event_date
 GROUP BY A1.player_id, A1.event_date
+
+📌 1204. Last Person to Fit in the Bus
+解法 1.
+With cte As
+(Select person_name, Sum(weight) Over(Order By turn ASC) As Total_Weight 
+From Queue)
+
+Select person_name
+From cte
+Where Total_weight <= 1000
+Order By Total_weight DESC
+Limit 1
+
+解法 2.
+Select person_name
+From (Select person_name, 
+      Sum(weight) Over(Order By Turn ASC) As total_weight
+      From Queue q1) As t1
+Where total_weight <= 1000
+Order By total_weight DESC
+Limit 1;
