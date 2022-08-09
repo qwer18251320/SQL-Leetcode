@@ -176,3 +176,17 @@ From (Select person_name,
 Where total_weight <= 1000
 Order By total_weight DESC
 Limit 1;
+
+📌 1308. Running Total for Different Genders
+解法 1.
+Select gender, day, Sum(score_points) Over(Partition By gender Order By day) As total
+From Scores
+Group By gender, day
+Order By gender, day
+
+解法 2.
+Select s1.gender, s1.day, Sum(s1.score_points) Over(Partition By Gender Order By day) As total
+From Scores s1 Join Scores s2 
+On s1.day >= s2.day And s1.gender=s2.gender
+Group By s1.gender, s1.day
+Order By gender ASC, day ASC;
