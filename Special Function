@@ -88,9 +88,22 @@ On e2.employee_id = s2.employee_id
 Where name IS NULL
 Order By employee_id ASC
 
-
-
-
+📌 1341. Movie Rating
+解法 1.
+(Select name As results
+From Users u1 Right Join MovieRating m1 
+Using(user_id)
+Group By user_id
+Order By Count(Distinct movie_id) DESC, name ASC
+Limit 1)
+Union
+(Select title As results
+From Movies m2 Right Join MovieRating m3
+Using(movie_id)
+Where Left(created_at,7)="2020-02"
+Group By movie_id
+Order By Avg(rating) DESC, title ASC
+Limit 1)
 
 
 ## Reformate + Union ##
