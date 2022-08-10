@@ -178,3 +178,11 @@ On e1.event_type = e2.event_type
 Where e1.occurences > average 
 Group By business_id
 Having Count(e1.event_type) >1;
+
+📌 1364. Number of Trusted Contacts of a Customer
+Select invoice_id, customer_name, price, Ifnull(Count(contact_email),0) As contacts_cnt, 
+IFNULL(Sum(Case When contact_name In (Select Distinct customer_name From Customers) Then 1 Else 0 End),0) As trusted_contacts_cnt
+From Invoices i1 Left Join Contacts c1 Using(user_id)
+Join Customers c2 On customer_id = user_id
+Group By invoice_id, i1.user_id
+Order By invoice_id;
