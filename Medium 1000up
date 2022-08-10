@@ -186,3 +186,26 @@ From Invoices i1 Left Join Contacts c1 Using(user_id)
 Join Customers c2 On customer_id = user_id
 Group By invoice_id, i1.user_id
 Order By invoice_id;
+
+📌 1468. Calculate Salaries
+解法 1.
+With cte As
+(Select company_id, Max(salary) As maxx, 
+(Case When Max(salary) < 1000 Then 0
+When Max(salary) > 10000 Then 49
+Else 24 End) As tax
+From Salaries
+Group By company_id)
+
+Select company_id, employee_id, employee_name, Round(salary-((tax/100)*salary),0) As salary
+From Salaries Left Join cte Using(company_id)
+
+解法 2. 
+Select s1.company_id, employee_id,employee_name, Round(salary*tax,0) As salary
+From Salaries s1 Left Join (Select company_id, 
+                         (Case When Max(salary) < 1000 Then 1
+                          When Max(salary) >= 10000 Then 0.51
+                          Else 0.76 End) As tax
+                         From Salaries
+                         Group By company_id) As s2
+Using(company_id);
