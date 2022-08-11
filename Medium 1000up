@@ -280,3 +280,33 @@ With cte As
 Using (team_id)
 Group By team_id
 Order By num_points Desc, team_id ASC
+
+
+📌 1264. Page Recommendations
+解法 1. 
+With cte As
+(Select user1_id As user_id 
+From Friendship
+Where user2_id = 1
+Union All
+Select user2_id As user_id
+From Friendship
+Where user1_id = 1)
+
+
+Select Distinct(page_id) As recommended_page
+From Likes l1
+Where user_id IN (Select user_id
+                 From cte)
+And page_id Not In (Select page_id From Likes Where user_id=1)
+
+解法 2. 
+Select Distinct(page_id) As recommended_page
+From 
+(Select Case When user1_id = 1 Then user2_id
+When user2_id = 1 Then user1_id End As user_id From Friendship) As f1
+Join Likes Using(user_id)
+Where page_id Not In
+(Select page_id
+From Likes
+Where user_id = 1);
