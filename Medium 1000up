@@ -247,3 +247,36 @@ From (Select Distinct(trans_id) As id, country, "chargebacks" As state, amount, 
       From transactions) As t2
 Group By Left(trans_date,7), country
 Having approved_count>0 Or chargeback_count>0
+
+📌 1212. Team Scores in Football Tournament
+解法 1. 
+Select team_id, team_name, 
+Sum(Case When team_id=host_team And host_goals>guest_goals Then 3 Else 0 End)+
+Sum(Case When team_id=guest_team And guest_goals>host_goals Then 3 Else 0 End)+
+Sum(Case When team_id=host_team And host_goals=guest_goals Then 1 Else 0 End)+
+Sum(Case When team_id=guest_team And guest_goals=host_goals Then 1 Else 0 End) As num_points
+From Teams Left Join Matches
+On team_id = host_team Or team_id = guest_team
+Group By team_id
+Order By num_points DESC, team_id ASC;
+
+解法 2.
+With cte As
+(Select host_team, guest_team, host_goals, guest_goals, 
+ (Case When host_goals > guest_goals Then 3 
+ When host_goals = guest_goals Then 1
+ Else 0 End) As host_points,
+ (Case When host_goals < guest_goals Then 3 
+ When host_goals = guest_goals Then 1
+ Else 0 End) As guest_points
+ From Matches)
+ 
+ Select team_id, team_name, Ifnull(Sum(num),0) As num_points
+ From Teams t1 Left Join (Select host_team As team_id, host_points As num
+                           From cte
+                           Union All
+                           Select guest_team As team_id, guest_points As num
+                           From cte) As t2
+Using (team_id)
+Group By team_id
+Order By num_points Desc, team_id ASC
