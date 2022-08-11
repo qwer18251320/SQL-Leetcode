@@ -234,3 +234,16 @@ Left Join (Select product_id, new_price
                                               Where change_date <= "2019-08-16"
                                               Group By product_id)) As p2
 On p1.product_id = p2.product_id;
+
+📌 1205. Monthly Transactions II
+Select Left(trans_date,7) As month, country, Sum(state="approved") As approved_count,
+Sum((Case When state="approved" Then amount Else 0 End)) As approved_amount,
+Sum(state="chargebacks") As chargeback_count,
+Sum(Case When state="chargebacks" Then amount Else 0 End) As chargeback_amount
+From (Select Distinct(trans_id) As id, country, "chargebacks" As state, amount, c1.trans_date
+      From Chargebacks c1 Left Join Transactions On id=trans_id
+      Union All
+      Select*
+      From transactions) As t2
+Group By Left(trans_date,7), country
+Having approved_count>0 Or chargeback_count>0
