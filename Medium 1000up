@@ -310,3 +310,27 @@ Where page_id Not In
 (Select page_id
 From Likes
 Where user_id = 1);
+
+📌 1270. All People Report to the Given Manager
+解法 1.
+With cte As
+(Select employee_id
+From Employees 
+Where manager_id = 1
+And employee_id != 1)
+
+Select employee_id
+From Employees 
+Where manager_id In (Select employee_id
+                     From Employees
+                     Where manager_id In (Select employee_id From cte)
+                     Or employee_id In (Select employee_id From cte))
+Or employee_id In (Select employee_id From cte)
+
+解法 2. 
+Select e1.employee_id
+From Employees e1, Employees e2, Employees e3
+Where e1.manager_id = e2.employee_id
+And e2.manager_id = e3.employee_id
+And e3.manager_id = 1 
+And e1.employee_id != 1;
