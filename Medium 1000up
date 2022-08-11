@@ -209,3 +209,28 @@ From Salaries s1 Left Join (Select company_id,
                          From Salaries
                          Group By company_id) As s2
 Using(company_id);
+
+📌 1164. Product Price at a Given Date
+解法 1.
+With cte As
+(Select product_id, new_price As price
+From Products p1
+Where (product_id, change_date) In (Select product_id, Max(change_date) As change_date
+                                    From Products
+                                    Where change_date <= "2019-08-16"
+                                    Group By product_id))
+
+Select p2.Product_id, Ifnull(price,10) As price
+From Products p2 Left Join cte Using(product_id)
+Group By p2.product_id 
+
+解法 2. 
+Select p1.product_id, IfNull(p2.new_price,10) As price
+From (Select Distinct product_id From Products) As p1
+Left Join (Select product_id, new_price
+          From Products
+          Where (product_id, change_date) In (Select product_id, Max(change_date) As last_date
+                                              From Products
+                                              Where change_date <= "2019-08-16"
+                                              Group By product_id)) As p2
+On p1.product_id = p2.product_id;
