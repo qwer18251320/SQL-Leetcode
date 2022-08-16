@@ -334,3 +334,39 @@ Where e1.manager_id = e2.employee_id
 And e2.manager_id = e3.employee_id
 And e3.manager_id = 1 
 And e1.employee_id != 1;
+
+📌 1501. Countries You Can Safely Invest In
+解法 1. 
+With cte As
+(Select c1.name As country, avg(duration) As avg_dur
+From
+(Select caller_id As id, duration
+From Calls
+Union
+Select callee_id As id, duration
+From Calls) As c2
+Join Person p1 Using(id)
+Join Country c1 On Left(phone_number,3)=country_code
+Group By c1.name)
+
+Select Distinct(country)
+From Calls c3, cte
+Where avg_dur > (Select avg(duration)
+                From Calls)
+                
+解法 2. 
+Select country
+From
+(Select c1.name As country, Avg(t1.duration) As avg_dur
+From Person p1 
+Join Country c1 On Left(phone_number,3) = country_code
+Join 
+(Select caller_id as id, duration 
+From Calls
+Union All
+Select callee_id as id, duration
+From Calls) As t1 On p1.id = t1.id
+Group By country) As g1,
+(Select Avg(duration) As global_dur
+From Calls) As g2
+Where avg_dur > global_dur;
