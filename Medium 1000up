@@ -435,3 +435,20 @@ From Users u1 Left Join Transactions t1
 On u1.user_id = t1.paid_by 
 Or u1.user_id = t1.paid_to
 Group By u1.user_id;
+
+📌 1715. Count Apples and Oranges
+解法 1.
+With cte As
+(Select box_id, 
+Ifnull(b1.apple_count,0)+ifnull(c1.apple_count,0) As apple_count,
+Ifnull(b1.orange_count,0)+ifnull(c1.orange_count,0) As orange_count
+From Boxes b1 Left Join Chests c1 Using(chest_id))
+
+Select Sum(apple_count) As apple_count, Sum(orange_count) As orange_count
+From cte
+
+解法 2.
+Select Sum(a1+a2) As apple_count, Sum(o1+o2) As orange_count
+From
+(Select IfNull(b1.chest_id, null), b1.apple_count As a1, b1.orange_count As o1, IfNull(c1.apple_count,0) As a2, IfNull(c1.orange_count,0) As o2
+From Boxes b1 Left Join Chests c1 Using(chest_id)) As t1;
