@@ -370,3 +370,24 @@ Group By country) As g1,
 (Select Avg(duration) As global_dur
 From Calls) As g2
 Where avg_dur > global_dur;
+
+📌 1532. The Most Recent Three Orders
+解法 1. 
+With cte As
+(Select name As customer_name, o1.customer_id, order_id, order_date, Rank() Over(Partition By customer_id Order By order_date DESC) As rnk
+From Orders o1 Left Join Customers c1 Using(customer_id))
+
+Select customer_name, customer_id, order_id, order_date
+From cte
+Where rnk<=3
+Order By customer_name ASC, customer_id ASC, order_date DESC
+
+解法 2. 
+Select name As customer_name, c1.customer_id, o1.order_id, o1.order_date
+From customers c1 
+Join Orders o1 On c1.customer_id = o1.customer_id
+Join Orders o2 On o1.customer_id = o2.customer_id 
+And o1.order_date <= o2.order_date
+Group By customer_name, o1.customer_id, o1.order_id, o1.order_date
+Having Count(*)<=3
+Order By 1 ASC, 2 ASC, o1.order_date DESC;
