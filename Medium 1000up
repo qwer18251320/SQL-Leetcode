@@ -411,3 +411,27 @@ Where (product_name,order_date) IN
 From Products p1 Right Join Orders o1 Using(Product_id)
 Group By o1.product_id)
 Order By product_name ASC, product_id ASC, Order_id ASC;
+
+📌 1555. Bank Account Summary
+解法 1.
+With cte As
+(Select user_id, Sum(money) As credit
+From
+(Select paid_by As user_id, -amount As money
+From Transactions
+Union All
+Select paid_to As user_id, amount As money
+From Transactions) As t1
+Group By user_id)
+
+Select u1.user_id, u1.user_name, Ifnull(u1.credit+cte.credit, u1.credit) As credit,
+(Case When u1.credit+cte.credit<0 Then "Yes" Else "No" End) As credit_limit_breached
+From Users u1 Left Join cte Using(user_id)
+
+解法 2.
+Select USER_ID, USER_NAME, IfNull(Sum(Case When u1.user_id=t1.paid_by Then -amount Else amount End),0)+credit As CREDIT,
+(Case When IfNull(Sum(Case When u1.user_id=t1.paid_by Then -amount Else amount End),0)+credit< 0 Then "Yes" Else "No" End) As CREDIT_LIMIT_BREACHED
+From Users u1 Left Join Transactions t1
+On u1.user_id = t1.paid_by 
+Or u1.user_id = t1.paid_to
+Group By u1.user_id;
