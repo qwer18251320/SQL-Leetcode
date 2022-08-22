@@ -463,3 +463,29 @@ Select Distinct(activity)
 From cte
 Where num NOT IN (Select Max(num) From cte)
 And num NOT IN (Select Min(num) From cte)
+
+📌 1699. Number of Calls Between Two Persons
+解法 1. 
+With cte As
+(Select from_id As person1, to_id As person2, duration
+From Calls
+Where from_id < to_id
+Union All
+Select to_id As person1, from_id As person2, duration
+From Calls
+Where from_id > to_id)
+
+Select person1, person2, Count(*) As call_count, Sum(duration) As total_duration
+From cte
+Group By person1, person2
+
+解法 2.
+Select person1, person2, Count(*) As call_count, Sum(duration) As total_duration
+From (Select from_id As person1, to_id As person2, duration
+      From Calls
+      Where from_id < to_id
+      Union All
+      Select to_id As person1, from_id As person2, duration
+      From Calls
+      Where from_id > to_id) As c1
+Group By person1, person2
