@@ -528,3 +528,22 @@ Or c1.Fr_open = player_id
 Or c1.US_open = player_id
 Or c1.Au_open = player_id
 Group By player_id
+
+📌 1831. Maximum Transaction Each Day
+解法 1.
+With cte As
+(Select transaction_id, day, amount, Dense_rank() Over(Partition By Day(day) Order By amount DESC) As rnk
+From Transactions t1)
+
+Select transaction_id
+From cte
+Where rnk=1
+Order By transaction_id ASC
+
+解法 2. 
+Select transaction_id
+From Transactions t1
+Where (Day(day), amount) In (Select Day(day), Max(amount) As amount
+                          From Transactions t2
+                          Group By Day(day))
+Order By transaction_id ASC
