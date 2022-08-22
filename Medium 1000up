@@ -547,3 +547,24 @@ Where (Day(day), amount) In (Select Day(day), Max(amount) As amount
                           From Transactions t2
                           Group By Day(day))
 Order By transaction_id ASC
+
+📌 1867. Orders With Maximum Quantity Above Average
+解法 1. 
+With cte As
+(Select order_id, Avg(quantity) As avg_quan, Max(quantity) As max_quan
+From OrdersDetails o1
+Group By order_id)
+
+Select order_id
+From cte
+Where max_quan > (Select Max(avg_quan)
+                 From cte)
+
+解法 2. 
+Select Distinct order_id
+From OrdersDetails o1
+Group By order_id
+Having Max(quantity) > (Select Max(avg_quan)
+                       From (Select order_id, Avg(quantity) As avg_quan
+                            From OrdersDetails
+                            Group By order_id) As o1)
