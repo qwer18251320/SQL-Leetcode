@@ -489,3 +489,42 @@ From (Select from_id As person1, to_id As person2, duration
       From Calls
       Where from_id > to_id) As c1
 Group By person1, person2
+
+📌 1783. Grand Slam Titles
+解法 1.
+With cte As
+(Select wimbledon As player_id
+From Championships
+Union All
+Select Fr_open As player_id
+From Championships
+Union All
+Select US_open As player_id
+From Championships
+Union All
+Select Au_open As player_id
+From Championships)
+
+Select player_id, player_name, Count(*) As grand_slams_count
+From cte Left Join players Using(player_id)
+Group By player_id
+
+解法 2. 
+Select player_id, player_name, 
+Sum(Wimbledon = player_id)+Sum(Fr_open = player_id)+Sum(US_open = player_id)+Sum(Au_open = player_id) As grand_slams_count 
+From Championships c1 Left Join players p1 
+On Wimbledon = player_id Or Fr_open = player_id Or US_open = player_id
+Group By player_id
+
+解法 3. 
+Select player_id, player_name, 
+Sum((Case When c1.Wimbledon = player_id Then 1 Else 0 End)+
+(Case When c1.Fr_open = player_id Then 1 Else 0 End)+
+(Case When c1.US_open = player_id Then 1 Else 0 End)+
+(Case When c1.Au_open = player_id Then 1 Else 0 End)) As grand_slams_count 
+From Championships c1 Join players p1 
+On c1.Wimbledon = player_id 
+Or c1.Fr_open = player_id 
+Or c1.US_open = player_id
+Or c1.Au_open = player_id
+Group By player_id
