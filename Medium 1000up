@@ -568,3 +568,20 @@ Having Max(quantity) > (Select Max(avg_quan)
                        From (Select order_id, Avg(quantity) As avg_quan
                             From OrdersDetails
                             Group By order_id) As o1)
+
+
+📌 1934. Confirmation Rate
+解法 1. 
+Select s1.user_id, Ifnull(Round(Sum(Case When action="confirmed" Then 1 Else 0 End)/Count(*),2),0) As confirmation_rate
+From Signups s1 Left Join Confirmations c1 Using(user_id)
+Group By s1.user_id
+
+解法 2. 
+With cte As
+(Select user_id, Round(Sum(action="confirmed")/Count(*),2) As cnt
+ From Confirmations
+ Group By user_id)
+ 
+ Select s1.user_id, Ifnull(cnt,0) As confirmation_rate
+ From Signups s1 Left Join cte Using(user_id)
+ Group By s1.user_id
