@@ -569,6 +569,36 @@ Having Max(quantity) > (Select Max(avg_quan)
                             From OrdersDetails
                             Group By order_id) As o1)
 
+📌 1907. Count Salary Categories
+解法 1. 
+Select "Low Salary" As category, Sum(Case When income <20000 Then 1 Else 0 End) As accounts_count
+From Accounts
+Union All 
+Select "High Salary" As category, Sum(Case When income >50000 Then 1 Else 0 End) As accounts_count
+From Accounts
+Union All 
+Select "Average Salary" As category, Sum(Case When income Between 20000 and 50000 Then 1 Else 0 End) As accounts_count
+From Accounts
+
+解法 2. 
+With cte1 As (
+Select "Low Salary" As category
+UNION
+Select "High Salary" As category
+UNION
+Select "Average Salary" As category),
+cte2 As(
+Select account_id, (Case When income < 20000 Then 'Low Salary'
+                    When income > 50000 then 'High Salary'
+                    Else 'Average Salary' End) As category
+From Accounts)
+    
+Select cte1.category, Ifnull(Count(cte2.account_id),0) As accounts_count 
+From cte1 Left Join cte2 Using(category)
+Group By cte1.category
+
+
+
 
 📌 1934. Confirmation Rate
 解法 1. 
