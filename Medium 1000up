@@ -569,6 +569,29 @@ Having Max(quantity) > (Select Max(avg_quan)
                             From OrdersDetails
                             Group By order_id) As o1)
 
+📌 1875. Group Employees of the Same Salary
+解法 1. 
+With cte As
+(Select Distinct(salary) As salary, Dense_rank() Over (Order By salary) As team_id
+From Employees
+Group By salary
+Having Count(*) >= 2)
+
+Select employee_id, name, salary, team_id
+From cte Left Join Employees Using(salary)
+Order By team_id ASC, employee_id ASC
+
+解法 2. 
+Select*, Dense_Rank() Over(Order By salary) As team_id
+From Employees
+Where salary In
+(Select salary
+From Employees
+Group By salary
+Having count(*)>=2);
+
+
+
 📌 1907. Count Salary Categories
 解法 1. 
 Select "Low Salary" As category, Sum(Case When income <20000 Then 1 Else 0 End) As accounts_count
