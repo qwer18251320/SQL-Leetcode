@@ -190,3 +190,20 @@ From Scores s1 Join Scores s2
 On s1.day >= s2.day And s1.gender=s2.gender
 Group By s1.gender, s1.day
 Order By gender ASC, day ASC;
+
+
+📌 1285. Find the Start and End Number of Continuous Ranges
+解法 1.
+With cte As
+(Select log_id, Dense_rank() Over(Order By log_id ASC) AS rnk
+From Logs)
+
+Select Min(log_id) As start_id, Max(log_id) As end_id
+From cte
+Group By (log_id-rnk)
+
+解法 2. 
+Select Min(log_id) As start_id, Max(log_id) As end_id
+From (Select log_id, row_number() over(Order By log_id) As num
+      From logs) As l1
+Group By (log_id-num)
