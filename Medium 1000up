@@ -638,3 +638,12 @@ With cte As
  Select s1.user_id, Ifnull(cnt,0) As confirmation_rate
  From Signups s1 Left Join cte Using(user_id)
  Group By s1.user_id
+
+📌 1398. Customers Who Bought Products A and B but Not C
+解法 1.
+Select Distinct(o1.customer_id), customer_name
+From Orders o1 Left Join Customers c1 Using(customer_id)
+Where o1.customer_id In (Select customer_id From Orders Where product_name = "A")
+And o1.customer_id In (Select customer_id From Orders Where product_name = "B")
+And o1.customer_id Not In (Select customer_id From Orders Where product_name = "C")
+Order By o1.customer_id
