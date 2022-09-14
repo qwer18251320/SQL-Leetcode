@@ -731,3 +731,31 @@ Select m1.member_id, m1.name, (Case When conversion_rate >= 80 Then "Diamond"
                                Else "Bronze" End) As category
 From Members m1 Left Join cte Using(member_id)
 Order By m1.member_id ASC
+
+📌 2041. Accepted Candidates From the Interviews
+解法 1.
+Select candidate_id
+From Candidates c1 Left Join Rounds r1 Using(interview_id)
+Where years_of_exp >=2
+Group By candidate_id
+Having Sum(score)>15
+
+解法 2.
+Select candidate_id
+From Candidates c1 Left Join (Select interview_id, Sum(score) As tlt
+                              From Rounds r1
+                              Group By interview_id) As cte
+                              Using(interview_id)
+Where years_of_exp >=2
+And tlt>15
+
+解法 3.
+With cte As
+(Select interview_id, Sum(score) As tlt
+From Rounds r1
+Group By interview_id)
+
+Select candidate_id
+From Candidates c1 Left Join cte Using(interview_id)
+Where years_of_exp >=2
+And tlt>15
