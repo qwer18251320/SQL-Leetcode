@@ -1,3 +1,28 @@
+📌 1440. Evaluate Boolean Expression
+解法 1.
+With cte As(
+Select left_operand, v1.value As left_value, operator, right_operand, v2.value As right_value
+From Expressions e1 Left Join Variables v1 On v1.name=left_operand
+Left Join Variables v2 On v2.name=right_operand)
+
+Select left_operand, operator, right_operand,
+(Case When operator=">" And left_value > right_value Then "true"
+When operator="<" And left_value < right_value Then "true"
+When operator="=" And left_value = right_value Then "true"
+Else "false" End) As value
+From cte
+
+解法 2.
+Select left_operand, operator, right_operand,
+(Case When operator=">" And v1.value > v2.value Then "true"
+When operator="<" And v1.value < v2.value Then "true"
+When operator="=" And v1.value = v2.value Then "true"
+Else "false" End) As value
+From Expressions e1 Left Join Variables v1 On v1.name=left_operand
+Left Join Variables v2 On v2.name=right_operand
+
+
+
 📌 1445. Apples & Oranges
 解法 1.
 With cte1 As
