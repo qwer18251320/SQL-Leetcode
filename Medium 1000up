@@ -1,3 +1,48 @@
+📌 1445. Apples & Oranges
+解法 1.
+With cte1 As
+(Select sale_date, sold_num As apples
+From Sales
+Where fruit="apples"),
+cte2 As
+(Select sale_date, sold_num As oranges
+From Sales
+Where fruit="oranges")
+
+Select cte1.sale_date, (apples-oranges) As diff
+From cte1 Left Join cte2 Using(sale_date)
+Order By cte1.sale_date ASC
+
+
+解法 2. 
+With cte1 As
+(Select sale_date, sold_num As apples
+From Sales
+Where fruit="apples"),
+cte2 As
+(Select sale_date, sold_num As oranges
+From Sales
+Where fruit="oranges")
+
+Select cte1.sale_date, (apples-oranges) As diff
+From cte1 Left Join cte2 Using(sale_date)
+
+
+解法 3.
+Select s1.sale_date, apples - oranges As diff
+From
+(Select sale_date, sold_num As apples
+From Sales
+Where fruit = "apples") As s1
+Join
+(Select sale_date, sold_num As oranges
+From Sales
+Where fruit = "oranges") As s2
+Using(sale_date)
+Order By sale_date ASC;
+
+
+
 📌 1158. Market Analysis I
 
 # Left Join 結合 and year
